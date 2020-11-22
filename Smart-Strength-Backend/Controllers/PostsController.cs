@@ -9,12 +9,13 @@ using Smart_Strength_Backend.Models;
 
 namespace Smart_Strength_Backend.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/posts")]
     [ApiController]
     public class PostsController : FirebaseController
     {
         [HttpGet]
-        public async Task<Comment> Get()
+        [Route("test")]
+        public async Task<Comment> Test()
         {
             CollectionReference excercisesRef = this.FirestoreDb.Collection("Excercises");
             QuerySnapshot snapshot = await excercisesRef.GetSnapshotAsync();
