@@ -21,7 +21,7 @@ namespace Smart_Strength_Backend.Controllers
         }
 
 
-        [HttpGet]
+        [HttpPost]
         [Route("create")]
         public TrainingProgram CreateTrainingRegime(Questionnaire questionnaire)
         {

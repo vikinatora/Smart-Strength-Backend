@@ -19,7 +19,7 @@ namespace Smart_Strength_Backend.Controllers
             this.DietsService = new DietsService();
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("create")]
         public Diet CreateDiet(Questionnaire questionnaire) 
         {
