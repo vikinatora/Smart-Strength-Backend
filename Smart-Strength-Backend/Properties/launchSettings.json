@@ -14,6 +14,7 @@
       "launchBrowser": true,
       "launchUrl": "weatherforecast",
       "environmentVariables": {
+        "Key": "Value",
         "GOOGLE_APPLICATION_CREDENTIALS": "C:\\Users\\vikin\\source\\repos\\vikinatora\\Smart-Strength-Backend\\Smart-Strength-Backend\\smart-strength-firebase-adminsdk-mstkd-d8df384bda.json",
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

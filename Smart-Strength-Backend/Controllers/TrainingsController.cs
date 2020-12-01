@@ -25,7 +25,7 @@ namespace Smart_Strength_Backend.Controllers
         [Route("create")]
         public TrainingProgram CreateTrainingRegime(Questionnaire questionnaire)
         {
-            //Workout[] workouts = this.WorkoutsService.CreateWorkouts(questionnaire);
+            Workout[] workouts = this.WorkoutsService.CreateWorkouts(questionnaire);
             //SetRegimeName(questionnaire, trainingProgram);
             var trainingProgram = new TrainingProgram()
             {
