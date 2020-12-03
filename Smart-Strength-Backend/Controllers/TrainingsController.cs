@@ -13,398 +13,92 @@ namespace Smart_Strength_Backend.Controllers
     [Route("api/trainings")]
     public class TrainingsController : FirebaseController
     {
-        public WorkoutsService WorkoutsService { get; private set; }
-
-        public TrainingsController()
-        {
-            this.WorkoutsService = new WorkoutsService();
-        }
-
 
         [HttpPost]
         [Route("create")]
         public TrainingProgram CreateTrainingRegime(Questionnaire questionnaire)
         {
-            Workout[] workouts = this.WorkoutsService.CreateWorkouts(questionnaire);
-            //SetRegimeName(questionnaire, trainingProgram);
-            var trainingProgram = new TrainingProgram()
-            {
-                Name = "Push/Pull/Legs with slow reps",
-                Workouts = new Workout[]
-                {
-                    new Workout()
-                    {
-                        Difficulty = 1,
-                        Excercises = new Excercise[]
-                        {
-                            new Excercise()
-                            {
-                                Name = "Bench press",
-                                Reps = 8,
-                                Sets = 4,
-                                Tempo = "slow"
-                            },
-                            new Excercise()
-                            {
-                                Name = "Dumbell shoulder press",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = "slow"
-                            },
-                            new Excercise()
-                            {
-                                Name = "Incline dumbell press",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = "slow"
-                            },
-                            new Excercise()
-                            {
-                                Name = "Lateral raises",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = "slow"
-                            },
-                            new Excercise()
-                            {
-                                Name = "Cable crossover",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = "slow"
-                            },
-                            new Excercise()
-                            {
-                                Name = "Dips",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = "normal"
-                            },
-                            new Excercise()
-                            {
-                                Name = "Triceps Pushdown",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = "normal"
-                            },
-                        }
-                    },
-                    new Workout()
-                    {
-                        Difficulty = 1,
-                        Excercises = new Excercise[]
-                        {
-                            new Excercise()
-                            {
-                                Name = "Pull ups",
-                                Reps = 8,
-                                Sets = 4,
-                                Tempo = "slow"
-                            },
-                            new Excercise()
-                            {
-                                Name = "Seated cable rows",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = "slow"
-                            },
-                            new Excercise()
-                            {
-                                Name = "Pulldown",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = "slow"
-                            },
-                            new Excercise()
-                            {
-                                Name = "Face pulls",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = "slow"
-                            },
-                            new Excercise()
-                            {
-                                Name = "Ez bar curls",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = "slow"
-                            },
-                            new Excercise()
-                            {
-                                Name = "Hammer curls",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = "normal"
-                            },
-                        }
-                    },
-                    new Workout()
-                    {
-                        Difficulty = 1,
-                        Excercises = new Excercise[]
-                        {
-                            new Excercise()
-                            {
-                                Name = "Squats",
-                                Reps = 8,
-                                Sets = 4,
-                                Tempo = "slow"
-                            },
-                            new Excercise()
-                            {
-                                Name = "Romanian deadlift",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = "slow"
-                            },
-                            new Excercise()
-                            {
-                                Name = "Leg press",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = "slow"
-                            },
-                            new Excercise()
-                            {
-                                Name = "Leg extensions",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = "slow"
-                            },
-                            new Excercise()
-                            {
-                                Name = "Calf raises",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = "slow"
-                            },
-                        }
-                    },
-                    new Workout()
-                    {
-                        Difficulty = 1,
-                        Excercises = new Excercise[]
-                        {
-                            new Excercise()
-                            {
-                                Name = "Bench press",
-                                Reps = 8,
-                                Sets = 4,
-                                Tempo = "slow"
-                            },
-                            new Excercise()
-                            {
-                                Name = "Dumbell shoulder press",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = "slow"
-                            },
-                            new Excercise()
-                            {
-                                Name = "Incline dumbell press",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = "slow"
-                            },
-                            new Excercise()
-                            {
-                                Name = "Lateral raises",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = "slow"
-                            },
-                            new Excercise()
-                            {
-                                Name = "Cable crossover",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = "slow"
-                            },
-                            new Excercise()
-                            {
-                                Name = "Dips",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = "normal"
-                            },
-                            new Excercise()
-                            {
-                                Name = "Triceps Pushdown",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = "normal"
-                            },
-                        }
-                    },
-                    new Workout()
-                    {
-                        Difficulty = 1,
-                        Excercises = new Excercise[]
-                        {
-                            new Excercise()
-                            {
-                                Name = "Pull ups",
-                                Reps = 8,
-                                Sets = 4,
-                                Tempo = "slow"
-                            },
-                            new Excercise()
-                            {
-                                Name = "Seated cable rows",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = "slow"
-                            },
-                            new Excercise()
-                            {
-                                Name = "Pulldown",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = "slow"
-                            },
-                            new Excercise()
-                            {
-                                Name = "Face pulls",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = "slow"
-                            },
-                            new Excercise()
-                            {
-                                Name = "Ez bar curls",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = "slow"
-                            },
-                            new Excercise()
-                            {
-                                Name = "Hammer curls",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = "normal"
-                            },
-                        }
-                    },
-                    new Workout()
-                    {
-                        Difficulty = 1,
-                        Excercises = new Excercise[]
-                        {
-                            new Excercise()
-                            {
-                                Name = "Squats",
-                                Reps = 8,
-                                Sets = 4,
-                                Tempo = "slow"
-                            },
-                            new Excercise()
-                            {
-                                Name = "Romanian deadlift",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = "slow"
-                            },
-                            new Excercise()
-                            {
-                                Name = "Leg press",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = "slow"
-                            },
-                            new Excercise()
-                            {
-                                Name = "Leg extensions",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = "slow"
-                            },
-                            new Excercise()
-                            {
-                                Name = "Calf raises",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = "slow"
-                            },
-                        }
-                    },
-                }
+            ExcercisesRepo excercisesRepo = new ExcercisesRepo(questionnaire.ProgressionRate, questionnaire.TrainingExperience, questionnaire.FitnessGoal);
+            WorkoutsService workoutsService = new WorkoutsService(questionnaire, excercisesRepo);
+            Workout[] workouts = workoutsService.CreateWorkouts(questionnaire);
+            TrainingProgram trainingProgram = new TrainingProgram();
 
-            };
+            trainingProgram.Workouts = workouts;
+            trainingProgram.Name = CreateRegimeName(questionnaire.TrainingExperience, questionnaire.FitnessGoal);
+            
             return trainingProgram;
         }
 
-        private static void SetRegimeName(Questionnaire questionnaire, TrainingProgram trainingProgram)
+        private string CreateRegimeName(string trainingExperience, string fitnessGoal)
         {
-            switch (questionnaire.FitnessGoal)
+            switch (fitnessGoal)
             {
                 case "1":
-                    switch (questionnaire.TrainingExperience)
+                    switch (trainingExperience)
                     {
                         case "1":
-                            trainingProgram.Name = "Push/Pull/Legs with slow tempo";
-                            break;
+                            return "Push/Pull/Legs with slow tempo";
                         case "2":
-                            trainingProgram.Name = "Push/Pull/Legs with normal tempo";
-                            break;
+                            return "Push/Pull/Legs with normal tempo";
                         case "3":
-                            trainingProgram.Name = "Brosplit with slow reps";
-                            break;
+                            return "Full body with slow reps";
                         default:
                             break;
                     }
                     break;
 
                 case "2":
-                    switch (questionnaire.TrainingExperience)
+                    switch (trainingExperience)
                     {
                         case "1":
-                            trainingProgram.Name = "Push/Pull/Legs with slow tempo";
-                            break;
+                            return "Push/Pull/Legs with slow tempo";
                         case "2":
-                            trainingProgram.Name = "Push/Pull/Legs with normal tempo";
-                            break;
+                            return "Push/Pull/Legs with normal tempo";
                         case "3":
-                            trainingProgram.Name = "Brosplit with slow reps";
-                            break;
+                            return "Full body with slow reps";
                         default:
                             break;
                     }
                     break;
 
                 case "3":
-                    switch (questionnaire.TrainingExperience)
+                    switch (trainingExperience)
                     {
                         case "1":
-                            trainingProgram.Name = "Push/Pull/Legs with slow tempo";
-                            break;
+                            return "Push/Pull/Legs with slow tempo";
+                           
                         case "2":
-                            trainingProgram.Name = "Push/Pull/Legs with normal tempo";
-                            break;
+                            return "Push/Pull/Legs with normal tempo";
+                          
                         case "3":
-                            trainingProgram.Name = "Brosplit with slow reps";
-                            break;
+                            return "Full body with slow reps";
+                           
                         default:
                             break;
                     }
                     break;
                 case "4":
-                    switch (questionnaire.TrainingExperience)
+                    switch (trainingExperience)
                     {
                         case "1":
-                            trainingProgram.Name = "Push/Pull/Legs with slow tempo";
-                            break;
+                            return "Push/Pull/Legs with slow tempo";
+                          
                         case "2":
-                            trainingProgram.Name = "Push/Pull/Legs with normal tempo";
-                            break;
+                            return "Push/Pull/Legs with normal tempo";
+              
                         case "3":
-                            trainingProgram.Name = "Brosplit with slow reps";
-                            break;
+                            return "Full body with slow reps";
+
                         default:
                             break;
                     }
                     break;
                 default:
                     break;
+
             }
+            return null;
+
         }
     }
 }

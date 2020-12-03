@@ -8,549 +8,337 @@ namespace Smart_Strength_Backend.Services
 {
     public class WorkoutsService
     {
+        public string Tempo { get; private set; }
+        public int Difficulty { get; private set; }
+        public ExcercisesRepo ExcercisesRepo { get; private set; }
+
+        public WorkoutsService(Questionnaire questionnaire, ExcercisesRepo excercisesRepo)
+        {
+            this.ExcercisesRepo = excercisesRepo;
+        }
+
         public Workout[] CreateWorkouts(Questionnaire questionnaire)
         {
-            // Lose weight
-            if (questionnaire.FitnessGoal == "1")
+            Workout[] program = null;
+
+            // Lose weight || Build muscle and lose weiУght
+            if (questionnaire.FitnessGoal == "1" || questionnaire.FitnessGoal == "3")
             {
-                this.CreateWeightLossWorkout(questionnaire);
+                if (questionnaire.TrainingExperience == "1")
+                {
+                    program = this.CreateFulLBodyTrainingRegime(questionnaire, true);
+                }
+                else if (questionnaire.TrainingExperience == "2" || questionnaire.TrainingExperience == "3")
+                {
+                    program = this.CreatePPLTrainingRegime(questionnaire, true);
+                }
+                else
+                {
+                    program = this.CreateULTrainingRegime(questionnaire, true);
+                }
             }
-            // Build muscle
-            else if (questionnaire.FitnessGoal == "2")
+            // Build muscle || Maintain
+            else if (questionnaire.FitnessGoal == "2" || questionnaire.FitnessGoal == "4")
             {
-                this.CreateMuscleBuildingWorkout(questionnaire);
+                if (questionnaire.TrainingExperience == "1")
+                {
+                    program = this.CreateFulLBodyTrainingRegime(questionnaire, false);
+                }
+                else if (questionnaire.TrainingExperience == "2" || questionnaire.TrainingExperience == "3")
+                {
+                    program = this.CreatePPLTrainingRegime(questionnaire, false);
+                }
+                else
+                {
+                    program = this.CreateULTrainingRegime(questionnaire, false);
+                }
             }
-            // Maintain
-            else if (questionnaire.FitnessGoal == "3")
-            {
-                this.CreateMaintainingWorkout(questionnaire);
-            }
-            // Lose weight and build muscle
-            else if (questionnaire.FitnessGoal == "4")
-            {
-                this.CreateWeightLossAndMuscleBuildingWorkout(questionnaire);
-            }
-            return new Workout[] { };
+            return program;
         }
 
-        private void CreateWeightLossAndMuscleBuildingWorkout(Questionnaire questionnaire)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void CreateMaintainingWorkout(Questionnaire questionnaire)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void CreateMuscleBuildingWorkout(Questionnaire questionnaire)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void CreateWeightLossWorkout(Questionnaire questionnaire)
-        {
-            if (questionnaire.TrainingExperience == "1")
-            {
-                this.CreateBroSplitWorkout(questionnaire, true);
-            }
-            else if (questionnaire.TrainingExperience == "1" || questionnaire.TrainingExperience == "2")
-            {
-                this.CreatePPLWorkout(questionnaire, true);
-            }
-            else if (questionnaire.TrainingExperience == "4")
-            {
-                this.CreateULWorkout(questionnaire, true);
-            }
-        }
-
-        private void CreateULWorkout(Questionnaire questionnaire, bool v)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void CreatePPLWorkout(Questionnaire questionnaire, bool includeCardio)
-        {
-            throw new NotImplementedException();
-        }
-
-        private Workout[] CreateBroSplitWorkout(Questionnaire questionnaire, bool includeCardio)
+        private Workout[] CreateULTrainingRegime(Questionnaire questionnaire, bool includeCardio)
         {
             List<Workout> workouts = new List<Workout>();
-            string tempo = "";
-            if (questionnaire.ProgressionRate == "1" || questionnaire.ProgressionRate == "2")
-            {
-                tempo = "normal";
-            }
-            else if (questionnaire.ProgressionRate == "3")
-            {
-                tempo = "slow";
-            }
-            else if (questionnaire.ProgressionRate == "4")
-            {
-                tempo = "very slow";
-            }
 
-            Workout chestAndTricepsWorkouCardio = new Workout()
-            {
-                Difficulty = int.Parse(questionnaire.TrainingExperience),
-                Excercises = new Excercise[]
-                       {
-                            new Excercise()
-                            {
-                                Name = "Treadmill",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = "normal pace"
-                            },
-                            new Excercise()
-                            {
-                                Name = "Bench press",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = tempo
-                            },
-                            new Excercise()
-                            {
-                                Name = "Shoulder press",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = tempo
-                            },
-                            new Excercise()
-                            {
-                                Name = "Upper dumbell bench press",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = tempo
-                            },
-                            new Excercise()
-                            {
-                                Name = "Dips",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = tempo
-                            },
-                            new Excercise()
-                            {
-                                Name = "Triceps pushdown",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = tempo
-                            }
-                       }
-            };
-            Workout backAndBicepsWorkoutCardio = new Workout()
-            {
-                Difficulty = int.Parse(questionnaire.TrainingExperience),
-                Excercises = new Excercise[]
-                {
-                    new Excercise()
-                    {
-                        Name = "Treadmill",
-                        Reps = 10,
-                        Sets = 3,
-                        Tempo = "normal pace"
-                    },
-                    new Excercise()
-                    {
-                        Name = "Pull ups",
-                        Reps = 10,
-                        Sets = 3,
-                        Tempo = tempo
-                    },
-                    new Excercise()
-                    {
-                        Name = "Lat pulldown",
-                        Reps = 10,
-                        Sets = 3,
-                        Tempo = tempo
-                    },
-                    new Excercise()
-                    {
-                        Name = "Face pulls",
-                        Reps = 10,
-                        Sets = 3,
-                        Tempo = tempo
-                    },
-                    new Excercise()
-                    {
-                        Name = "Bicep curls",
-                        Reps = 10,
-                        Sets = 3,
-                        Tempo = tempo
-                    },
-                    new Excercise()
-                    {
-                        Name = "Hammer curls",
-                        Reps = 10,
-                        Sets = 3,
-                        Tempo = tempo
-                    }
-                }
-            };
-            Workout legsWorkoutCardio = new Workout()
-            {
-                Difficulty = int.Parse(questionnaire.TrainingExperience),
-                Excercises = new Excercise[]
-                        {
-                            new Excercise()
-                            {
-                                Name = "Treadmill",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = "normal pace"
-                            },
-                            new Excercise()
-                            {
-                                Name = "Squats",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = tempo
-                            },
-                            new Excercise()
-                            {
-                                Name = "Leg extensions",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = tempo
-                            },
-                            new Excercise()
-                            {
-                                Name = "Leg press",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = tempo
-                            },
-                            new Excercise()
-                            {
-                                Name = "Crunches",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = tempo
-                            },
-                            new Excercise()
-                            {
-                                Name = "Leg raises",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = tempo
-                            }
-                        }
-            };
-            Workout mixedWorkout = new Workout()
-            {
-                Difficulty = int.Parse(questionnaire.TrainingExperience),
-                Excercises = new Excercise[]
-                        {
-                            new Excercise()
-                            {
-                                Name = "Bench press",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = tempo
-                            },
-                            new Excercise()
-                            {
-                                Name = "Pull ups",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = tempo
-                            },
-                            new Excercise()
-                            {
-                                Name = "Upper dumbell chest press",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = tempo
-                            },
-                            new Excercise()
-                            {
-                                Name = "Lat pulldown",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = tempo
-                            },
-                            new Excercise()
-                            {
-                                Name = "Dips",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = tempo
-                            },
-                            new Excercise()
-                            {
-                                Name = "Bicep curls",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = tempo
-                            }
-                        }
-            };
-            Workout mixedWorkoutCardio = new Workout()
-            {
-                Difficulty = int.Parse(questionnaire.TrainingExperience),
-                Excercises = new Excercise[]
-            {
-                             new Excercise()
-                            {
-                                Name = "Treadmill",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = "normal pace"
-                            },
-                            new Excercise()
-                            {
-                                Name = "Bench press",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = tempo
-                            },
-                            new Excercise()
-                            {
-                                Name = "Pull ups",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = tempo
-                            },
-                            new Excercise()
-                            {
-                                Name = "Upper dumbell chest press",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = tempo
-                            },
-                            new Excercise()
-                            {
-                                Name = "Lat pulldown",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = tempo
-                            },
-                            new Excercise()
-                            {
-                                Name = "Dips",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = tempo
-                            },
-                            new Excercise()
-                            {
-                                Name = "Bicep curls",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = tempo
-                            }
-            }
-            };
-
-            Workout chestAndTricepsWorkout = new Workout()
-            {
-                Difficulty = int.Parse(questionnaire.TrainingExperience),
-                Excercises = new Excercise[]
-                       {
-                            new Excercise()
-                            {
-                                Name = "Bench press",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = tempo
-                            },
-                            new Excercise()
-                            {
-                                Name = "Shoulder press",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = tempo
-                            },
-                            new Excercise()
-                            {
-                                Name = "Upper dumbell bench press",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = tempo
-                            },
-                            new Excercise()
-                            {
-                                Name = "Dips",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = tempo
-                            },
-                            new Excercise()
-                            {
-                                Name = "Triceps pushdown",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = tempo
-                            }
-                       }
-            };
-            Workout backAndBicepsWorkous = new Workout()
-            {
-                Difficulty = int.Parse(questionnaire.TrainingExperience),
-                Excercises = new Excercise[]
-                {
-                    new Excercise()
-                    {
-                        Name = "Pull ups",
-                        Reps = 10,
-                        Sets = 3,
-                        Tempo = tempo
-                    },
-                    new Excercise()
-                    {
-                        Name = "Lat pulldown",
-                        Reps = 10,
-                        Sets = 3,
-                        Tempo = tempo
-                    },
-                    new Excercise()
-                    {
-                        Name = "Face pulls",
-                        Reps = 10,
-                        Sets = 3,
-                        Tempo = tempo
-                    },
-                    new Excercise()
-                    {
-                        Name = "Bicep curls",
-                        Reps = 10,
-                        Sets = 3,
-                        Tempo = tempo
-                    },
-                    new Excercise()
-                    {
-                        Name = "Hammer curls",
-                        Reps = 10,
-                        Sets = 3,
-                        Tempo = tempo
-                    }
-                }
-            };
-            Workout legsWorkout = new Workout()
-            {
-                Difficulty = int.Parse(questionnaire.TrainingExperience),
-                Excercises = new Excercise[]
-                        {
-                            new Excercise()
-                            {
-                                Name = "Squats",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = tempo
-                            },
-                            new Excercise()
-                            {
-                                Name = "Leg extensions",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = tempo
-                            },
-                            new Excercise()
-                            {
-                                Name = "Leg press",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = tempo
-                            },
-                            new Excercise()
-                            {
-                                Name = "Crunches",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = tempo
-                            },
-                            new Excercise()
-                            {
-                                Name = "Leg raises",
-                                Reps = 10,
-                                Sets = 3,
-                                Tempo = tempo
-                            }
-                        }
-            };
+            Workout upperWorkout = CreateUpperBodyWorkout(includeCardio);
+            Workout lowerWorkout = CreateLegsWorkout(includeCardio);
 
             switch (questionnaire.WorkoutsPerWeek)
             {
                 case "3":
-                    if (includeCardio)
-                    {
-                        workouts.Add(chestAndTricepsWorkouCardio);
-                        workouts.Add(backAndBicepsWorkoutCardio);
-                        workouts.Add(legsWorkoutCardio);
-                    }
-                    else
-                    {
-                        workouts.Add(chestAndTricepsWorkout);
-                        workouts.Add(backAndBicepsWorkous);
-                        workouts.Add(legsWorkout);
-
-                    }
+                    workouts.Add(upperWorkout);
+                    workouts.Add(lowerWorkout);
                     break;
 
                 case "4":
-                    if (includeCardio)
-                    {
-                        workouts.Add(chestAndTricepsWorkouCardio);
-                        workouts.Add(backAndBicepsWorkoutCardio);
-                        workouts.Add(legsWorkoutCardio);
-                        workouts.Add(mixedWorkoutCardio);
-                    }
-                    else
-                    {
-                        workouts.Add(chestAndTricepsWorkout);
-                        workouts.Add(backAndBicepsWorkous);
-                        workouts.Add(legsWorkout);
-                        workouts.Add(mixedWorkout);
-
-                    }
+                    workouts.Add(upperWorkout);
+                    workouts.Add(lowerWorkout);
+                    workouts.Add(upperWorkout);
                     break;
 
                 case "5":
-                    if (includeCardio)
-                    {
-                        workouts.Add(chestAndTricepsWorkouCardio);
-                        workouts.Add(backAndBicepsWorkoutCardio);
-                        workouts.Add(legsWorkoutCardio);
-                        workouts.Add(chestAndTricepsWorkouCardio);
-                        workouts.Add(backAndBicepsWorkoutCardio);
-
-                    }
-                    else
-                    {
-                        workouts.Add(chestAndTricepsWorkout);
-                        workouts.Add(backAndBicepsWorkous);
-                        workouts.Add(legsWorkout);
-                        workouts.Add(chestAndTricepsWorkout);
-                        workouts.Add(backAndBicepsWorkous);
-                    }
+                    workouts.Add(upperWorkout);
+                    workouts.Add(lowerWorkout);
+                    workouts.Add(upperWorkout);
+                    workouts.Add(lowerWorkout);
+                    workouts.Add(upperWorkout);
                     break;
 
                 case "6":
-                    if (includeCardio)
-                    {
-                        workouts.Add(chestAndTricepsWorkouCardio);
-                        workouts.Add(backAndBicepsWorkoutCardio);
-                        workouts.Add(legsWorkoutCardio);
-                        workouts.Add(chestAndTricepsWorkouCardio);
-                        workouts.Add(backAndBicepsWorkoutCardio);
-                        workouts.Add(mixedWorkoutCardio);
-
-                    }
-                    else
-                    {
-                        workouts.Add(chestAndTricepsWorkout);
-                        workouts.Add(backAndBicepsWorkous);
-                        workouts.Add(legsWorkout);
-                        workouts.Add(chestAndTricepsWorkout);
-                        workouts.Add(backAndBicepsWorkous);
-                        workouts.Add(mixedWorkout);
-                    }
+                    workouts.Add(upperWorkout);
+                    workouts.Add(lowerWorkout);
+                    workouts.Add(upperWorkout);
+                    workouts.Add(lowerWorkout);
+                    workouts.Add(upperWorkout);
+                    workouts.Add(lowerWorkout);
                     break;
             }
 
             return workouts.ToArray();
+        }
+
+        private Workout[] CreatePPLTrainingRegime(Questionnaire questionnaire, bool includeCardio)
+        {
+            List<Workout> workouts = new List<Workout>();
+
+            Workout pushWorkout = CreatePushWorkout(includeCardio);
+            Workout pullWorkout = CreatePullWorkout(includeCardio);
+            Workout legsWorkout = CreateLegsWorkout(includeCardio);
+
+            switch (questionnaire.WorkoutsPerWeek)
+            {
+                case "3":
+                    workouts.Add(pushWorkout);
+                    workouts.Add(pullWorkout);
+                    workouts.Add(legsWorkout);
+                    break;
+
+                case "4":
+                    workouts.Add(pushWorkout);
+                    workouts.Add(pullWorkout);
+                    workouts.Add(legsWorkout);
+                    break;
+
+                case "5":
+                    workouts.Add(pushWorkout);
+                    workouts.Add(pullWorkout);
+                    workouts.Add(legsWorkout);
+                    workouts.Add(pushWorkout);
+                    workouts.Add(pullWorkout);
+                    break;
+
+                case "6":
+                    workouts.Add(pushWorkout);
+                    workouts.Add(pullWorkout);
+                    workouts.Add(legsWorkout);
+                    workouts.Add(pushWorkout);
+                    workouts.Add(pullWorkout);
+                    workouts.Add(legsWorkout);
+                    break;
+            }
+
+            return workouts.ToArray();
+        }
+
+        private Workout CreatePullWorkout(bool includeCardio)
+        {
+            List<Excercise> excecises = new List<Excercise>();
+            if (includeCardio)
+            {
+                excecises.Add(this.ExcercisesRepo.GetTreadmillExcercise());
+            }
+            excecises.Add(this.ExcercisesRepo.GetPullUpsExcercise());
+            excecises.Add(this.ExcercisesRepo.GetLatPulldownExcercise());
+            excecises.Add(this.ExcercisesRepo.GetSeatedCableRow());
+            excecises.Add(this.ExcercisesRepo.GetFacePullsExcercise());
+            excecises.Add(this.ExcercisesRepo.GetBicepsCurlsExcercise());
+            excecises.Add(this.ExcercisesRepo.GetHammerCurlsExcercise());
+
+
+            Workout workout = new Workout()
+            {
+                Difficulty = this.Difficulty,
+                Excercises = excecises.ToArray()
+            };
+
+            return workout;
+        }
+
+        private Workout CreatePushWorkout(bool includeCardio)
+        {
+            List<Excercise> excecises = new List<Excercise>();
+            if (includeCardio)
+            {
+                excecises.Add(this.ExcercisesRepo.GetTreadmillExcercise());
+            }
+            excecises.Add(this.ExcercisesRepo.GetBenchPressExcercise());
+            excecises.Add(this.ExcercisesRepo.GetShoulderPressExcercise());
+            excecises.Add(this.ExcercisesRepo.GetUpperDumbellBenchPressExcercise());
+            excecises.Add(this.ExcercisesRepo.GetLateralRaisesExcercise());
+            excecises.Add(this.ExcercisesRepo.GetDipsExcercise());
+            excecises.Add(this.ExcercisesRepo.GetTricepsPushdownExcercise());
+
+
+            Workout workout = new Workout()
+            {
+                Difficulty = this.Difficulty,
+                Excercises = excecises.ToArray()
+            };
+
+            return workout;
+        }
+
+        private Workout[] CreateFulLBodyTrainingRegime(Questionnaire questionnaire, bool includeCardio)
+        {
+            List<Workout> workouts = new List<Workout>();
+
+            Workout mixedWorkout = CreateMixedWorkout(includeCardio);
+            for (int i = 0; i < int.Parse(questionnaire.WorkoutsPerWeek); i++)
+            {
+                workouts.Add(mixedWorkout);
+            }
+
+            return workouts.ToArray();
+        }
+
+        private Workout CreateChestAndTricepsWorkout(bool includeCardio)
+        {
+            List<Excercise> excecises = new List<Excercise>();
+            if(includeCardio)
+            {
+                excecises.Add(this.ExcercisesRepo.GetTreadmillExcercise());
+            }
+            excecises.Add(this.ExcercisesRepo.GetBenchPressExcercise());
+            excecises.Add(this.ExcercisesRepo.GetUpperDumbellBenchPressExcercise());
+            excecises.Add(this.ExcercisesRepo.GetCrossoverExcercise());
+            excecises.Add(this.ExcercisesRepo.GetDipsExcercise());
+            excecises.Add(this.ExcercisesRepo.GetTricepsPushdownExcercise());
+
+
+            Workout workout = new Workout()
+            {
+                Difficulty = this.Difficulty,
+                Excercises = excecises.ToArray()
+            };
+
+            return workout;
+        }
+
+        private Workout CreateShoulderWorkout(bool includeCardio)
+        {
+            List<Excercise> excecises = new List<Excercise>();
+            if (includeCardio)
+            {
+                excecises.Add(this.ExcercisesRepo.GetTreadmillExcercise());
+            }
+            excecises.Add(this.ExcercisesRepo.GetShoulderPressExcercise());
+            excecises.Add(this.ExcercisesRepo.GetDumbellShoulderPress());
+            excecises.Add(this.ExcercisesRepo.GetLateralRaisesExcercise());
+            excecises.Add(this.ExcercisesRepo.GetFacePullsExcercise());
+
+
+            Workout workout = new Workout()
+            {
+                Difficulty = this.Difficulty,
+                Excercises = excecises.ToArray()
+            };
+
+            return workout;
+        }
+
+        private Workout CreateBackAndBicepsWorkout(bool includeCardio)
+        {
+            List<Excercise> excecises = new List<Excercise>();
+            if (includeCardio)
+            {
+                excecises.Add(this.ExcercisesRepo.GetTreadmillExcercise());
+            }
+            excecises.Add(this.ExcercisesRepo.GetPullUpsExcercise());
+            excecises.Add(this.ExcercisesRepo.GetLatPulldownExcercise());
+            excecises.Add(this.ExcercisesRepo.GetFacePullsExcercise());
+            excecises.Add(this.ExcercisesRepo.GetBicepsCurlsExcercise());
+            excecises.Add(this.ExcercisesRepo.GetHammerCurlsExcercise());
+
+            Workout workout = new Workout()
+            {
+                Difficulty = this.Difficulty,
+                Excercises = excecises.ToArray()
+            };
+
+            return workout;
+        }
+
+        private Workout CreateLegsWorkout(bool includeCardio)
+        {
+            List<Excercise> excecises = new List<Excercise>();
+            if (includeCardio)
+            {
+                excecises.Add(this.ExcercisesRepo.GetTreadmillExcercise());
+            }
+            excecises.Add(this.ExcercisesRepo.GetSquatsExcercise());
+            excecises.Add(this.ExcercisesRepo.GetLegExtensionsExcercise());
+            excecises.Add(this.ExcercisesRepo.GetLegPressExcercise());
+            excecises.Add(this.ExcercisesRepo.GetCrunchesExcercise());
+            excecises.Add(this.ExcercisesRepo.GetLegRaisesExcercise());
+
+            Workout workout = new Workout()
+            {
+                Difficulty = this.Difficulty,
+                Excercises = excecises.ToArray()
+            };
+
+            return workout;
+        }
+
+        private Workout CreateMixedWorkout(bool includeCardio)
+        {
+            List<Excercise> excecises = new List<Excercise>();
+            if (includeCardio)
+            {
+                excecises.Add(this.ExcercisesRepo.GetTreadmillExcercise());
+            }
+
+            excecises.Add(this.ExcercisesRepo.GetBenchPressExcercise());
+            excecises.Add(this.ExcercisesRepo.GetPullUpsExcercise());
+            excecises.Add(this.ExcercisesRepo.GetUpperDumbellBenchPressExcercise());
+            excecises.Add(this.ExcercisesRepo.GetLatPulldownExcercise());
+            excecises.Add(this.ExcercisesRepo.GetDipsExcercise());
+            excecises.Add(this.ExcercisesRepo.GetBicepsCurlsExcercise());
+
+
+            Workout workout = new Workout()
+            {
+                Difficulty = this.Difficulty,
+                Excercises = excecises.ToArray()
+            };
+
+            return workout;
+        }
+
+        private Workout CreateUpperBodyWorkout(bool includeCardio)
+        {
+            List<Excercise> excecises = new List<Excercise>();
+            if (includeCardio)
+            {
+                excecises.Add(this.ExcercisesRepo.GetTreadmillExcercise());
+            }
+            excecises.Add(this.ExcercisesRepo.GetBenchPressExcercise());
+            excecises.Add(this.ExcercisesRepo.GetPullUpsExcercise());
+            excecises.Add(this.ExcercisesRepo.GetShoulderPressExcercise());
+            excecises.Add(this.ExcercisesRepo.GetSeatedCableRow());
+            excecises.Add(this.ExcercisesRepo.GetUpperDumbellBenchPressExcercise());
+            excecises.Add(this.ExcercisesRepo.GetFacePullsExcercise());
+            excecises.Add(this.ExcercisesRepo.GetBicepsCurlsExcercise());
+            excecises.Add(this.ExcercisesRepo.GetDipsExcercise());
+
+
+            Workout workout = new Workout()
+            {
+                Difficulty = this.Difficulty,
+                Excercises = excecises.ToArray()
+            };
+
+            return workout;
         }
     }
 }
