@@ -8,6 +8,7 @@ namespace Smart_Strength_Backend.Models
     public class Workout
     {
         public int Difficulty { get; set; }
+        public string Day { get; set; }
         public Excercise[] Excercises { get; set; }
     }
 }

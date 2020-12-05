@@ -12,128 +12,154 @@ namespace Smart_Strength_Backend.Services
         public int Difficulty { get; private set; }
         public ExcercisesRepo ExcercisesRepo { get; private set; }
 
-        public WorkoutsService(Questionnaire questionnaire, ExcercisesRepo excercisesRepo)
+        public WorkoutsService(ExcercisesRepo excercisesRepo)
         {
             this.ExcercisesRepo = excercisesRepo;
         }
 
-        public Workout[] CreateWorkouts(Questionnaire questionnaire)
+        public Workout[] CreateWorkouts(string fitnessGoal, string trainingExperience, string workoutsPerWeek)
         {
             Workout[] program = null;
 
             // Lose weight || Build muscle and lose weiУght
-            if (questionnaire.FitnessGoal == "1" || questionnaire.FitnessGoal == "3")
+            if (fitnessGoal == "1" || fitnessGoal == "3")
             {
-                if (questionnaire.TrainingExperience == "1")
+                if (trainingExperience == "1")
                 {
-                    program = this.CreateFulLBodyTrainingRegime(questionnaire, true);
+                    program = this.CreateFulLBodyTrainingRegime(workoutsPerWeek, true);
                 }
-                else if (questionnaire.TrainingExperience == "2" || questionnaire.TrainingExperience == "3")
+                else if (trainingExperience == "2" || trainingExperience == "3")
                 {
-                    program = this.CreatePPLTrainingRegime(questionnaire, true);
+                    program = this.CreatePPLTrainingRegime(workoutsPerWeek, true);
                 }
                 else
                 {
-                    program = this.CreateULTrainingRegime(questionnaire, true);
+                    program = this.CreateULTrainingRegime(workoutsPerWeek, true);
                 }
             }
             // Build muscle || Maintain
-            else if (questionnaire.FitnessGoal == "2" || questionnaire.FitnessGoal == "4")
+            else if (fitnessGoal == "2" || fitnessGoal == "4")
             {
-                if (questionnaire.TrainingExperience == "1")
+                if (trainingExperience == "1")
                 {
-                    program = this.CreateFulLBodyTrainingRegime(questionnaire, false);
+                    program = this.CreateFulLBodyTrainingRegime(workoutsPerWeek, false);
                 }
-                else if (questionnaire.TrainingExperience == "2" || questionnaire.TrainingExperience == "3")
+                else if (trainingExperience == "2" || trainingExperience == "3")
                 {
-                    program = this.CreatePPLTrainingRegime(questionnaire, false);
+                    program = this.CreatePPLTrainingRegime(workoutsPerWeek, false);
                 }
                 else
                 {
-                    program = this.CreateULTrainingRegime(questionnaire, false);
+                    program = this.CreateULTrainingRegime(workoutsPerWeek, false);
                 }
+            }
+            if (program.Length == 3)
+            {
+                program[0].Day = "Monday";
+                program[1].Day = "Wednesday";
+                program[2].Day = "Friday";
+            }
+
+            if (program.Length == 4)
+            {
+                program[0].Day = "Monday";
+                program[1].Day = "Tuesday";
+                program[2].Day = "Thursday";
+                program[3].Day = "Friday";
+            }
+
+            if (program.Length == 5)
+            {
+                program[0].Day = "Monday";
+                program[1].Day = "Tuesday";
+                program[2].Day = "Wednesday";
+                program[3].Day = "Friday";
+                program[4].Day = "Saturday";
+            }
+
+            if (program.Length == 6)
+            {
+                program[0].Day = "Monday";
+                program[1].Day = "Tuesday";
+                program[2].Day = "Wednesday";
+                program[3].Day = "Friday";
+                program[4].Day = "Saturday";
+                program[5].Day = "Sunday";
             }
             return program;
         }
 
-        private Workout[] CreateULTrainingRegime(Questionnaire questionnaire, bool includeCardio)
+        private Workout[] CreateULTrainingRegime(string workoutsPerWeek, bool includeCardio)
         {
             List<Workout> workouts = new List<Workout>();
 
-            Workout upperWorkout = CreateUpperBodyWorkout(includeCardio);
-            Workout lowerWorkout = CreateLegsWorkout(includeCardio);
-
-            switch (questionnaire.WorkoutsPerWeek)
+            switch (workoutsPerWeek)
             {
                 case "3":
-                    workouts.Add(upperWorkout);
-                    workouts.Add(lowerWorkout);
+                    workouts.Add(CreateUpperBodyWorkout(includeCardio));
+                    workouts.Add(CreateLegsWorkout(includeCardio));
                     break;
 
                 case "4":
-                    workouts.Add(upperWorkout);
-                    workouts.Add(lowerWorkout);
-                    workouts.Add(upperWorkout);
+                    workouts.Add(CreateUpperBodyWorkout(includeCardio));
+                    workouts.Add(CreateLegsWorkout(includeCardio));
+                    workouts.Add(CreateUpperBodyWorkout(includeCardio));
                     break;
 
                 case "5":
-                    workouts.Add(upperWorkout);
-                    workouts.Add(lowerWorkout);
-                    workouts.Add(upperWorkout);
-                    workouts.Add(lowerWorkout);
-                    workouts.Add(upperWorkout);
+                    workouts.Add(CreateUpperBodyWorkout(includeCardio));
+                    workouts.Add(CreateLegsWorkout(includeCardio));
+                    workouts.Add(CreateUpperBodyWorkout(includeCardio));
+                    workouts.Add(CreateLegsWorkout(includeCardio));
+                    workouts.Add(CreateUpperBodyWorkout(includeCardio));
                     break;
 
                 case "6":
-                    workouts.Add(upperWorkout);
-                    workouts.Add(lowerWorkout);
-                    workouts.Add(upperWorkout);
-                    workouts.Add(lowerWorkout);
-                    workouts.Add(upperWorkout);
-                    workouts.Add(lowerWorkout);
+                    workouts.Add(CreateUpperBodyWorkout(includeCardio));
+                    workouts.Add(CreateLegsWorkout(includeCardio));
+                    workouts.Add(CreateUpperBodyWorkout(includeCardio));
+                    workouts.Add(CreateLegsWorkout(includeCardio));
+                    workouts.Add(CreateUpperBodyWorkout(includeCardio));
+                    workouts.Add(CreateLegsWorkout(includeCardio));
                     break;
             }
 
             return workouts.ToArray();
         }
 
-        private Workout[] CreatePPLTrainingRegime(Questionnaire questionnaire, bool includeCardio)
+        private Workout[] CreatePPLTrainingRegime(string workoutsPerWeek, bool includeCardio)
         {
             List<Workout> workouts = new List<Workout>();
-
-            Workout pushWorkout = CreatePushWorkout(includeCardio);
-            Workout pullWorkout = CreatePullWorkout(includeCardio);
-            Workout legsWorkout = CreateLegsWorkout(includeCardio);
-
-            switch (questionnaire.WorkoutsPerWeek)
+            switch (workoutsPerWeek)
             {
                 case "3":
-                    workouts.Add(pushWorkout);
-                    workouts.Add(pullWorkout);
-                    workouts.Add(legsWorkout);
+                    workouts.Add(CreatePushWorkout(includeCardio));
+                    workouts.Add(CreatePullWorkout(includeCardio));
+                    workouts.Add(CreateLegsWorkout(includeCardio));
                     break;
 
                 case "4":
-                    workouts.Add(pushWorkout);
-                    workouts.Add(pullWorkout);
-                    workouts.Add(legsWorkout);
+                    workouts.Add(CreatePushWorkout(includeCardio));
+                    workouts.Add(CreatePullWorkout(includeCardio));
+                    workouts.Add(CreateLegsWorkout(includeCardio));
+                    workouts.Add(CreatePushWorkout(includeCardio));
                     break;
 
                 case "5":
-                    workouts.Add(pushWorkout);
-                    workouts.Add(pullWorkout);
-                    workouts.Add(legsWorkout);
-                    workouts.Add(pushWorkout);
-                    workouts.Add(pullWorkout);
+                    workouts.Add(CreatePushWorkout(includeCardio));
+                    workouts.Add(CreatePullWorkout(includeCardio));
+                    workouts.Add(CreateLegsWorkout(includeCardio));
+                    workouts.Add(CreatePushWorkout(includeCardio));
+                    workouts.Add(CreatePullWorkout(includeCardio));
                     break;
 
                 case "6":
-                    workouts.Add(pushWorkout);
-                    workouts.Add(pullWorkout);
-                    workouts.Add(legsWorkout);
-                    workouts.Add(pushWorkout);
-                    workouts.Add(pullWorkout);
-                    workouts.Add(legsWorkout);
+                    workouts.Add(CreatePushWorkout(includeCardio));
+                    workouts.Add(CreatePullWorkout(includeCardio));
+                    workouts.Add(CreateLegsWorkout(includeCardio));
+                    workouts.Add(CreatePushWorkout(includeCardio));
+                    workouts.Add(CreatePullWorkout(includeCardio));
+                    workouts.Add(CreateLegsWorkout(includeCardio));
                     break;
             }
 
@@ -188,14 +214,12 @@ namespace Smart_Strength_Backend.Services
             return workout;
         }
 
-        private Workout[] CreateFulLBodyTrainingRegime(Questionnaire questionnaire, bool includeCardio)
+        private Workout[] CreateFulLBodyTrainingRegime(string workoutsPerWeek, bool includeCardio)
         {
             List<Workout> workouts = new List<Workout>();
-
-            Workout mixedWorkout = CreateMixedWorkout(includeCardio);
-            for (int i = 0; i < int.Parse(questionnaire.WorkoutsPerWeek); i++)
+            for (int i = 0; i < int.Parse(workoutsPerWeek); i++)
             {
-                workouts.Add(mixedWorkout);
+                workouts.Add(CreateMixedWorkout(includeCardio));
             }
 
             return workouts.ToArray();

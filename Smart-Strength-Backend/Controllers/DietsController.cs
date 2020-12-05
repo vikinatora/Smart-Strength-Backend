@@ -21,10 +21,25 @@ namespace Smart_Strength_Backend.Controllers
 
         [HttpPost]
         [Route("create")]
-        public Diet CreateDiet(Questionnaire questionnaire) 
+        public Diet CreateDiet(string gender, double weight, int height, int fitnessGoal, int age, string progressionRate) 
         {
-            Diet diet = this.DietsService.CreateDiet();
-            return diet;
+            try
+            {
+                Diet diet = this.DietsService.CreateDiet(gender, weight, height, fitnessGoal, age, progressionRate);
+                return diet;
+            }
+            catch(Exception ex)
+            {
+                return new Diet()
+                {
+                    Goal = "Build muscle",
+                    Calories = 2600,
+                    Carbs = 240,
+                    Fat = 50,
+                    Protein = 50,
+                };
+
+            }
         }
     }
 }
