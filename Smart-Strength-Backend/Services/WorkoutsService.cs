@@ -162,8 +162,8 @@ namespace Smart_Strength_Backend.Services
                     workouts.Add(CreateLegsWorkout(includeCardio));
                     break;
             }
-
-            return workouts.ToArray();
+            var workoutArray = workouts.ToArray();
+            return workoutArray;
         }
 
         private Workout CreatePullWorkout(bool includeCardio)

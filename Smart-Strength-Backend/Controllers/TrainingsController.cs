@@ -14,16 +14,19 @@ namespace Smart_Strength_Backend.Controllers
 {
     [ApiController]
     [Route("api/trainings")]
-    public class TrainingsController : FirebaseController
+    public class TrainingsController : ControllerBase
     {
+        public UsersService UsersService { get; private set; }
+
         public TrainingsController()
         {
+            this.UsersService = new UsersService();
+        }
 
-        }   
-        
+
         [HttpPost]
         [Route("create")]
-        public TrainingProgram CreateTrainingRegime(string fitnessGoal, string progressionRate, string trainingDuration, string trainingExperience, string workoutPreference, string workoutsPerWeek )
+        public async Task<TrainingProgram> CreateTrainingRegime(string userId, string fitnessGoal, string progressionRate, string trainingDuration, string trainingExperience, string workoutPreference, string workoutsPerWeek )
         {
             try
             {
@@ -34,7 +37,7 @@ namespace Smart_Strength_Backend.Controllers
 
                 trainingProgram.Workouts = workouts;
                 trainingProgram.Name = CreateRegimeName(trainingExperience, fitnessGoal);
-
+                await this.UsersService.AddTrainingProgramToUser(trainingProgram, userId);
                 return trainingProgram;
 
             }

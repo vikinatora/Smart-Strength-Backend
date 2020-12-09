@@ -6,28 +6,34 @@ using Google.Cloud.Firestore;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Smart_Strength_Backend.Models;
+using Smart_Strength_Backend.Services;
 
 namespace Smart_Strength_Backend.Controllers
 {
     [Route("api/posts")]
     [ApiController]
-    public class PostsController : FirebaseController
+    public class PostsController : ControllerBase
     {
-        [HttpGet]
-        [Route("test")]
-        public async Task<Comment> Test()
+        public PostsService PostsService { get; private set; }
+
+        public PostsController()
         {
-            CollectionReference excercisesRef = this.FirestoreDb.Collection("Excercises");
-            QuerySnapshot snapshot = await excercisesRef.GetSnapshotAsync();
-            foreach (DocumentSnapshot document in snapshot)
+            this.PostsService = new PostsService();
+        }
+        [HttpGet]
+        [Route("get")]
+        public async Task<Post[]> GetPosts()
+        {
+            try
             {
-                Dictionary<string, object> documentDictionary = document.ToDictionary();
-                Console.WriteLine($"Document id: {document.Id}");
-                Console.WriteLine($"Document reps: {documentDictionary["reps"]}");
-                Console.WriteLine($"Document sets: {documentDictionary["sets"]}");
-                Console.WriteLine($"Document tempo: {documentDictionary["tempo"]}");
+                Post[] posts = await this.PostsService.GetPosts();
+                return posts;
             }
-            return null;
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
         }
     }
 }

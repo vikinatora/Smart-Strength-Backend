@@ -11,7 +11,7 @@ namespace Smart_Strength_Backend.Controllers
 {
     [Route("api/diets")]
     [ApiController]
-    public class DietsController : FirebaseController
+    public class DietsController : ControllerBase
     {
         public DietsService DietsService { get; private set; }
         public DietsController()
@@ -21,11 +21,12 @@ namespace Smart_Strength_Backend.Controllers
 
         [HttpPost]
         [Route("create")]
-        public Diet CreateDiet(string gender, double weight, int height, int fitnessGoal, int age, string progressionRate) 
+        public async Task<Diet> CreateDiet(string userId, string gender, double weight, int height, int fitnessGoal, int age, string progressionRate) 
         {
             try
             {
                 Diet diet = this.DietsService.CreateDiet(gender, weight, height, fitnessGoal, age, progressionRate);
+                await this.DietsService.AddDietToUser(diet, userId);
                 return diet;
             }
             catch(Exception ex)
@@ -41,5 +42,6 @@ namespace Smart_Strength_Backend.Controllers
 
             }
         }
+
     }
 }

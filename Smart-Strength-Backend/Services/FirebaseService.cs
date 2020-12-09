@@ -1,18 +1,18 @@
-﻿using System;
+﻿using Google.Cloud.Firestore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Google.Cloud.Firestore;
-using Microsoft.AspNetCore.Mvc;
 
-namespace Smart_Strength_Backend.Controllers
+namespace Smart_Strength_Backend.Services
 {
-    public class FirebaseController : ControllerBase
+    public class FirebaseService
     {
         protected FirestoreDb FirestoreDb { get; set; }
-        public FirebaseController()
+        public FirebaseService()
         {
             this.FirestoreDb = FirestoreDb.Create("smart-strength");
         }
+
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Smart_Strength_Backend.Services
 {
-    public class DietsService
+    public class DietsService : FirebaseService
     {
         public Diet CreateDiet(string gender, double weight, int height, int fitnessGoal, int age, string progressionRate)
         {
@@ -22,11 +22,13 @@ namespace Smart_Strength_Backend.Services
             {
                 dietName = fitnessGoal == 2 ? "Diet for building muscle" : "Diet for building muscle and losing weight";
                 calcualteProteinFatsCars(weight, calories, 1.6, 1, out protein, out fats, out carbs);
-            } else if(fitnessGoal == 1)
+            }
+            else if (fitnessGoal == 1)
             {
                 dietName = "Diet for losing weight";
                 calcualteProteinFatsCars(weight, calories, 1.9, 0.8, out protein, out fats, out carbs);
-            } else
+            }
+            else
             {
                 dietName = "Diet for maintaining weight";
                 calcualteProteinFatsCars(weight, calories, 1.7, 0.9, out protein, out fats, out carbs);
@@ -95,5 +97,36 @@ namespace Smart_Strength_Backend.Services
 
             return calories;
         }
+        public async Task<bool> AddDietToUser(Diet diet, string userId)
+        {
+            var dietCollection = this.FirestoreDb.Collection("Diets");
+            var dietObj = new Dictionary<string, object>
+            {
+                { "calories", diet.Calories },
+                { "protein", diet.Protein },
+                { "carbs", diet.Carbs },
+                { "protein", diet.Protein },
+                { "name", diet.Goal }
+            };
+            var result = dietCollection.AddAsync(dietObj);
+
+            var user = this.FirestoreDb.Collection("Users").Document(userId);
+            var userSnapshot = await user.GetSnapshotAsync();
+            if (userSnapshot.Exists)
+            {
+                var userObj = new Dictionary<string, object>
+                {
+                    { "diet", result.Id }
+                };
+
+                await user.SetAsync(userObj);
+                return true;
+            }
+            return false;
+        }
+
     }
+
+
+
 }
