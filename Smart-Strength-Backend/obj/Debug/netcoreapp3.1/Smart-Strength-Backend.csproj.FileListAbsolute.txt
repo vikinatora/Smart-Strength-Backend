@@ -47,3 +47,5 @@ C:\Users\vikin\source\repos\vikinatora\Smart-Strength-Backend\Smart-Strength-Bac
 C:\Users\vikin\source\repos\vikinatora\Smart-Strength-Backend\Smart-Strength-Backend\bin\Debug\netcoreapp3.1\System.Net.Http.Formatting.dll
 C:\Users\vikin\source\repos\vikinatora\Smart-Strength-Backend\Smart-Strength-Backend\bin\Debug\netcoreapp3.1\System.Web.Http.dll
 C:\Users\vikin\source\repos\vikinatora\Smart-Strength-Backend\Smart-Strength-Backend\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll
+C:\Users\PC\Desktop\New folder\Smart-Strength-Backend\obj\Debug\netcoreapp3.1\Smart-Strength-Backend.dll
+C:\Users\PC\Desktop\New folder\Smart-Strength-Backend\obj\Debug\netcoreapp3.1\Smart-Strength-Backend.pdb
