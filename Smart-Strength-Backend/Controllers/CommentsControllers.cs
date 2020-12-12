@@ -25,7 +25,7 @@ namespace Smart_Strength_Backend.Controllers
 		}
         [HttpGet]
         [Route("get")]
-        public async Task<Comment[]> GetPosts()
+        public async Task<Comment[]> GetComments()
         {
             try
             {

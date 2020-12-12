@@ -29,11 +29,11 @@ namespace Smart_Strength_Backend.Controllers
 
         [HttpPost]
         [Route("create")]
-        public async Task<Workout> CreateWorkout(string userId, int difficlity, int excercises, string type)
+        public async Task<Workout> CreateWorkout() 
         {
             try
             {
-                Workout workout = this.WorkoutService.WorkoutService(difficlity, excercises, type);
+                Workout workout = this.WorkoutService.WorkoutService(fitnessGoal, trainingExperience, workoutsPerWeek);
                 await this.WorkoutService.AddWorkoutToUser(workout, userId);
                 return workout;
             }
