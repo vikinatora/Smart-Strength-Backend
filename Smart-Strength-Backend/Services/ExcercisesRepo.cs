@@ -186,5 +186,6 @@ namespace Smart_Strength_Backend.Services
         {
             return this.CreateExcercise("Dumbell lateral raises");
         }
+
     }
 }

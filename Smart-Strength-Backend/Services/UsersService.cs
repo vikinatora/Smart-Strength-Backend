@@ -19,9 +19,9 @@ namespace Smart_Strength_Backend.Services
         public async Task<string> CreateUser(string fullName, string fbToken)
         {
             CollectionReference usersRef = this.FirestoreDb.Collection("Users");
-            QuerySnapshot existingUsers = await this.FirestoreDb.Collection("Users").WhereEqualTo("fb_token", fbToken).GetSnapshotAsync();
+            QuerySnapshot existingUsers = await usersRef.WhereEqualTo("fb_token", fbToken).GetSnapshotAsync();
 
-            if (existingUsers.Count > 0)
+            if (existingUsers.Documents.Count > 0)
             {
                 return existingUsers[0].Id;
             }
@@ -34,6 +34,19 @@ namespace Smart_Strength_Backend.Services
             DocumentReference writeResult = await usersRef.AddAsync(user);
             return writeResult.Id;
 
+        }
+
+        public async Task<string> GetIdFromToken(string fbToken)
+        {
+            CollectionReference usersRef = this.FirestoreDb.Collection("Users");
+            QuerySnapshot existingUsers = await usersRef.WhereEqualTo("fb_token", fbToken).GetSnapshotAsync();
+
+            if (existingUsers.Documents.Count > 0)
+            {
+                return existingUsers[0].Id;
+            }
+
+            return "";
         }
 
         public async Task<bool> AddTrainingProgramToUser(TrainingProgram trainingProgram, string userId)
@@ -51,7 +64,7 @@ namespace Smart_Strength_Backend.Services
                     {
                         { "trainingProgram", trProgramId },
                     };
-                    WriteResult writeResult = await user.SetAsync(trProgram);
+                    WriteResult writeResult = await user.UpdateAsync(trProgram);
                     return true;
 
                 }
@@ -76,11 +89,10 @@ namespace Smart_Strength_Backend.Services
             {
                 Dictionary<string, object> docDict = docSnapshot.ToDictionary();
                 user.Id = userId;
-                user.Name = docDict["full name"].ToString();
+                user.Name = docDict["fullName"].ToString();
             }
 
             return user;
         }
-
     }
 }

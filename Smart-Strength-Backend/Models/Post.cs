@@ -11,5 +11,8 @@ namespace Smart_Strength_Backend.Models
         public User Author { get; set; }
         public Comment[] Comments { get; set; }
         public string[] Likes { get; set; }
+        public string Created { get; set; }
+        public string Achievement { get; set; }
+
     }
 }

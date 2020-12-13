@@ -14,7 +14,7 @@ namespace Smart_Strength_Backend.Controllers
     [ApiController]
     public class PostsController : ControllerBase
     {
-        public PostsService PostsService { get; private set; }
+        public PostsService PostsService { get; }
 
         public PostsController()
         {
@@ -33,6 +33,22 @@ namespace Smart_Strength_Backend.Controllers
             {
                 Console.WriteLine(ex.Message);
                 return null;
+            }
+        }
+
+        [HttpPost]
+        [Route("create")]
+        public async Task<bool> CreatePost(string userId, string content, string achievement)
+        {
+            try
+            {
+                bool result = await this.PostsService.CreatePost(userId, content, achievement);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
             }
         }
     }

@@ -97,7 +97,7 @@ namespace Smart_Strength_Backend.Services
 
             return calories;
         }
-        public async Task<bool> AddDietToUser(Diet diet, string userId)
+        public async Task<bool> AddDietToUser(Diet diet, string userId, string gender, double weight, int height, int age)
         {
             var dietCollection = this.FirestoreDb.Collection("Diets");
             var dietObj = new Dictionary<string, object>
@@ -105,10 +105,9 @@ namespace Smart_Strength_Backend.Services
                 { "calories", diet.Calories },
                 { "protein", diet.Protein },
                 { "carbs", diet.Carbs },
-                { "protein", diet.Protein },
                 { "name", diet.Goal }
             };
-            var result = dietCollection.AddAsync(dietObj);
+            var result = await dietCollection.AddAsync(dietObj);
 
             var user = this.FirestoreDb.Collection("Users").Document(userId);
             var userSnapshot = await user.GetSnapshotAsync();
@@ -116,10 +115,14 @@ namespace Smart_Strength_Backend.Services
             {
                 var userObj = new Dictionary<string, object>
                 {
-                    { "diet", result.Id }
+                    { "diet", result.Id },
+                    { "gender", gender },
+                    { "weight", weight },
+                    { "height", height },
+                    { "age", age },
                 };
 
-                await user.SetAsync(userObj);
+                await user.UpdateAsync(userObj);
                 return true;
             }
             return false;

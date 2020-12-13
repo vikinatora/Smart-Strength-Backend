@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Smart_Strength_Backend.Models;
 using Smart_Strength_Backend.Services;
+using FromBodyAttribute = Microsoft.AspNetCore.Mvc.FromBodyAttribute;
+using HttpGetAttribute = Microsoft.AspNetCore.Mvc.HttpGetAttribute;
 using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
@@ -16,11 +18,13 @@ namespace Smart_Strength_Backend.Controllers
     [Route("api/trainings")]
     public class TrainingsController : ControllerBase
     {
-        public UsersService UsersService { get; private set; }
+        public UsersService UsersService { get; }
+        public TrainingsService TrainingsService { get; }
 
         public TrainingsController()
         {
             this.UsersService = new UsersService();
+            this.TrainingsService = new TrainingsService();
         }
 
 
@@ -347,6 +351,47 @@ namespace Smart_Strength_Backend.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("get")]
+        public async Task<Workout> GetTodaysWorkout(string userId)
+        {
+            try
+            {
+                if (String.IsNullOrEmpty(userId))
+                {
+                    return null;
+                }
+
+                Workout workout = await this.TrainingsService.GetWorkout(userId);
+
+                return workout;
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+        }
+
+        [HttpPost]
+        [Route("save")]
+        public async Task<bool> SaveWorkout([FromBody] Dictionary<string, string> workout)
+        {
+            try
+            {
+                if (String.IsNullOrEmpty(null))
+                {
+                    return false;
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+        }
         private string CreateRegimeName(string trainingExperience, string fitnessGoal)
         {
             switch (fitnessGoal)

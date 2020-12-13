@@ -14,8 +14,8 @@ namespace Smart_Strength_Backend.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        public UsersService UsersService { get; private set; }
-        public TrainingsService TrainingsService { get; private set; }
+        public UsersService UsersService { get; }
+        public TrainingsService TrainingsService { get; }
 
         public UsersController()
         {
@@ -29,6 +29,23 @@ namespace Smart_Strength_Backend.Controllers
             try
             {
                 string id = await this.UsersService.CreateUser(fullName, fbToken);
+                return id;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return "";
+            }
+
+        }
+
+        [HttpGet]
+        [Route("getIdfbToken")]
+        public async Task<string> GetIdFromToken(string fbToken)
+        {
+            try
+            {
+                string id = await this.UsersService.GetIdFromToken(fbToken);
                 return id;
             }
             catch (Exception ex)

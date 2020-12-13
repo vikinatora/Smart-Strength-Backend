@@ -26,7 +26,7 @@ namespace Smart_Strength_Backend.Controllers
             try
             {
                 Diet diet = this.DietsService.CreateDiet(gender, weight, height, fitnessGoal, age, progressionRate);
-                await this.DietsService.AddDietToUser(diet, userId);
+                await this.DietsService.AddDietToUser(diet, userId, gender, weight, height, age);
                 return diet;
             }
             catch(Exception ex)
