@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30621.155
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smart-Strength-Backend", "Smart-Strength-Backend.csproj", "{EE67BA0B-D4FC-48FF-8882-8F7C6CCEE3D7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EE67BA0B-D4FC-48FF-8882-8F7C6CCEE3D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE67BA0B-D4FC-48FF-8882-8F7C6CCEE3D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE67BA0B-D4FC-48FF-8882-8F7C6CCEE3D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE67BA0B-D4FC-48FF-8882-8F7C6CCEE3D7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CB5ADB40-CF76-4E1E-BA1F-E0102FA0DC3B}
+	EndGlobalSection
+EndGlobal
