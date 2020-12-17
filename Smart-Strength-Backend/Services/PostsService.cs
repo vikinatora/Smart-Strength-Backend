@@ -38,6 +38,7 @@ namespace Smart_Strength_Backend.Services
                 string achievement = documentDictionary["achievement"].ToString();
 
                 var post = new Post();
+                post.Id = document.Id;
                 post.Author = author;
                 post.Comments = commentsArray;
                 post.Content = content;
@@ -67,6 +68,59 @@ namespace Smart_Strength_Backend.Services
             DocumentReference result = await excercisesRef.AddAsync(newPost);
             if (!String.IsNullOrEmpty(result.Id))
             {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> LikePost(string postId, string userId)
+        {
+            DocumentReference excercisesRef = this.FirestoreDb.Collection("Posts").Document(postId);
+            var query = await excercisesRef.GetSnapshotAsync();
+            if (query.Exists)
+            {
+                var fields = query.ToDictionary();
+                var likes = ((List<object>)fields["likes"]).Cast<string>().ToList();
+                likes.Add(userId);
+                var newLikes = new Dictionary<string, object>()
+                {
+                    {"likes", likes.ToArray() }
+                };
+                var result = await excercisesRef.UpdateAsync(newLikes);
+                if(result == null)
+                {
+                    return false;
+                }
+
+                return true;
+            } else
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> UnlikePost(string postId, string userId)
+        {
+            DocumentReference excercisesRef = this.FirestoreDb.Collection("Posts").Document(postId);
+            var query = await excercisesRef.GetSnapshotAsync();
+            if (query.Exists)
+            {
+                var fields = query.ToDictionary();
+                var likes = ((List<object>)fields["likes"]).Cast<string>().ToList();
+                likes.Remove(userId);
+                var newLikes = new Dictionary<string, object>()
+                {
+                    {"likes", likes.ToArray() }
+                };
+                var result = await excercisesRef.UpdateAsync(newLikes);
+                if (result == null)
+                {
+                    return false;
+                }
+
                 return true;
             }
             else

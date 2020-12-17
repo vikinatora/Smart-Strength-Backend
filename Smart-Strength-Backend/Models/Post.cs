@@ -7,6 +7,7 @@ namespace Smart_Strength_Backend.Models
 {
     public class Post
     {
+        public string Id { get; set; }
         public string Content { get; set; }
         public User Author { get; set; }
         public Comment[] Comments { get; set; }
