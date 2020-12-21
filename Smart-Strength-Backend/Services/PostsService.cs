@@ -1,5 +1,6 @@
 ﻿using Google.Cloud.Firestore;
 using Smart_Strength_Backend.Models;
+using Smart_Strength_Backend.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -10,13 +11,13 @@ namespace Smart_Strength_Backend.Services
 {
     public class PostsService : FirebaseService
     {
-        public UsersService UsersService { get; private set; }
-        public CommentsService CommentsService { get; private set; }
+        public IUsersService UsersService { get; private set; }
+        public ICommentsService CommentsService { get; private set; }
 
-        public PostsService()
+        public PostsService(ICommentsService commentsService, IUsersService usersService)
         {
-            this.UsersService = new UsersService();
-            this.CommentsService = new CommentsService();
+            this.UsersService = usersService;
+            this.CommentsService = commentsService;
         }
 
         public async Task<Post[]> GetPosts()

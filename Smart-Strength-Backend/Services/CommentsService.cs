@@ -1,5 +1,6 @@
 ﻿using Google.Cloud.Firestore;
 using Smart_Strength_Backend.Models;
+using Smart_Strength_Backend.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +8,10 @@ using System.Threading.Tasks;
 
 namespace Smart_Strength_Backend.Services
 {
-    public class CommentsService : FirebaseService
+    public class CommentsService : FirebaseService, ICommentsService
     {
         public UsersService UsersService { get; private set; }
+
         public CommentsService()
         {
             this.UsersService = new UsersService();
@@ -135,6 +137,26 @@ namespace Smart_Strength_Backend.Services
             {
                 return false;
             }
+        }
+
+        Task<Comment[]> ICommentsService.GetComments(object[] commentsIDs)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<Comment> ICommentsService.AddComment(string postId, string userId, string content)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<bool> ICommentsService.LikeComment(string commentId, string userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<bool> ICommentsService.UnlikeComment(string commentId, string userId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

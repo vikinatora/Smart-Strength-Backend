@@ -1,4 +1,5 @@
 ﻿using Smart_Strength_Backend.Models;
+using Smart_Strength_Backend.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Smart_Strength_Backend.Services
 {
-    public class DietsService : FirebaseService
+    public class DietsService :FirebaseService, IDietsService
     {
         public Diet CreateDiet(string gender, double weight, int height, int fitnessGoal, int age, string progressionRate)
         {
@@ -20,18 +21,18 @@ namespace Smart_Strength_Backend.Services
 
             if (fitnessGoal == 2 || fitnessGoal == 4)
             {
-                dietName = fitnessGoal == 2 ? "Diet for building muscle" : "Diet for building muscle and losing weight";
-                calcualteProteinFatsCars(weight, calories, 1.6, 1, out protein, out fats, out carbs);
+                dietName = fitnessGoal == 2 ? "Build muscle" : "Build muscle and lose weight";
+                CalculateProteinFatsCarbs(weight, calories, 1.6, 1, out protein, out fats, out carbs);
             }
             else if (fitnessGoal == 1)
             {
-                dietName = "Diet for losing weight";
-                calcualteProteinFatsCars(weight, calories, 1.9, 0.8, out protein, out fats, out carbs);
+                dietName = "Lose weight";
+                CalculateProteinFatsCarbs(weight, calories, 1.9, 0.8, out protein, out fats, out carbs);
             }
             else
             {
-                dietName = "Diet for maintaining weight";
-                calcualteProteinFatsCars(weight, calories, 1.7, 0.9, out protein, out fats, out carbs);
+                dietName = "Maintain weight";
+                CalculateProteinFatsCarbs(weight, calories, 1.7, 0.9, out protein, out fats, out carbs);
             }
             return new Diet()
             {
@@ -43,7 +44,7 @@ namespace Smart_Strength_Backend.Services
             };
         }
 
-        private static double calcualteProteinFatsCars(double weight, double calories, double proteinCoeficient, double fatCoeficient, out double protein, out double fats, out double carbs)
+        public double CalculateProteinFatsCarbs(double weight, double calories, double proteinCoeficient, double fatCoeficient, out double protein, out double fats, out double carbs)
         {
             protein = proteinCoeficient * weight;
             fats = fatCoeficient * weight;
@@ -55,7 +56,7 @@ namespace Smart_Strength_Backend.Services
             return calories;
         }
 
-        private static double GetCaloriesFromGoal(int fitnessGoal, string progressionRate, double calories)
+        public double GetCaloriesFromGoal(int fitnessGoal, string progressionRate, double calories)
         {
             double caloriesChange = 0;
             if (progressionRate == "1")
@@ -83,7 +84,7 @@ namespace Smart_Strength_Backend.Services
             return calories;
         }
 
-        private static double CalcualteBMR(string gender, double weight, int height, int age)
+        public static double CalcualteBMR(string gender, double weight, int height, int age)
         {
             double calories = 10 * weight + 6.25 * height - 5 * age;
             if (gender == "male")

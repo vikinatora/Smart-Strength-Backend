@@ -1,21 +1,18 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\vikin\\source\\repos\\vikinatora\\Smart-Strength-Backend\\Smart-Strength-Backend\\Smart-Strength-Backend.csproj": {}
+    "C:\\Users\\vikin\\source\\repos\\Smart-Strength-Backend\\Smart-Strength-Backend\\Smart-Strength-Backend.csproj": {}
   },
   "projects": {
-    "C:\\Users\\vikin\\source\\repos\\vikinatora\\Smart-Strength-Backend\\Smart-Strength-Backend\\Smart-Strength-Backend.csproj": {
+    "C:\\Users\\vikin\\source\\repos\\Smart-Strength-Backend\\Smart-Strength-Backend\\Smart-Strength-Backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\vikin\\source\\repos\\vikinatora\\Smart-Strength-Backend\\Smart-Strength-Backend\\Smart-Strength-Backend.csproj",
+        "projectUniqueName": "C:\\Users\\vikin\\source\\repos\\Smart-Strength-Backend\\Smart-Strength-Backend\\Smart-Strength-Backend.csproj",
         "projectName": "Smart-Strength-Backend",
-        "projectPath": "C:\\Users\\vikin\\source\\repos\\vikinatora\\Smart-Strength-Backend\\Smart-Strength-Backend\\Smart-Strength-Backend.csproj",
+        "projectPath": "C:\\Users\\vikin\\source\\repos\\Smart-Strength-Backend\\Smart-Strength-Backend\\Smart-Strength-Backend.csproj",
         "packagesPath": "C:\\Users\\vikin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\vikin\\source\\repos\\vikinatora\\Smart-Strength-Backend\\Smart-Strength-Backend\\obj\\",
+        "outputPath": "C:\\Users\\vikin\\source\\repos\\Smart-Strength-Backend\\Smart-Strength-Backend\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
           "C:\\Users\\vikin\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
@@ -29,6 +26,7 @@
         },
         "frameworks": {
           "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
             "projectReferences": {}
           }
         },
@@ -40,6 +38,7 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
           "dependencies": {
             "Google.Cloud.Firestore": {
               "target": "Package",
@@ -68,7 +67,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.403\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
         }
       }
     }
