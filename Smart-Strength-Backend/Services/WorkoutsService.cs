@@ -163,7 +163,7 @@ namespace Smart_Strength_Backend.Services
                     workouts.Add(CreateLegsWorkout(includeCardio));
                     break;
             }
-            var workoutArray = workouts.ToArray();
+            Workout[] workoutArray = workouts.ToArray();
             return workoutArray;
         }
 

@@ -1,4 +1,5 @@
-﻿using Smart_Strength_Backend.Models;
+﻿using Google.Cloud.Firestore;
+using Smart_Strength_Backend.Models;
 using Smart_Strength_Backend.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -100,21 +101,21 @@ namespace Smart_Strength_Backend.Services
         }
         public async Task<bool> AddDietToUser(Diet diet, string userId, string gender, double weight, int height, int age)
         {
-            var dietCollection = this.FirestoreDb.Collection("Diets");
-            var dietObj = new Dictionary<string, object>
+            CollectionReference dietCollection = this.FirestoreDb.Collection("Diets");
+            Dictionary<string, object> dietObj = new Dictionary<string, object>
             {
                 { "calories", diet.Calories },
                 { "protein", diet.Protein },
                 { "carbs", diet.Carbs },
                 { "name", diet.Goal }
             };
-            var result = await dietCollection.AddAsync(dietObj);
+            DocumentReference result = await dietCollection.AddAsync(dietObj);
 
-            var user = this.FirestoreDb.Collection("Users").Document(userId);
-            var userSnapshot = await user.GetSnapshotAsync();
+            DocumentReference user = this.FirestoreDb.Collection("Users").Document(userId);
+            DocumentSnapshot userSnapshot = await user.GetSnapshotAsync();
             if (userSnapshot.Exists)
             {
-                var userObj = new Dictionary<string, object>
+                Dictionary<string, object> userObj = new Dictionary<string, object>
                 {
                     { "diet", result.Id },
                     { "gender", gender },
