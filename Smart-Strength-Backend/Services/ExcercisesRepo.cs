@@ -1,4 +1,5 @@
 ﻿using Smart_Strength_Backend.Models;
+using Smart_Strength_Backend.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,15 +7,15 @@ using System.Threading.Tasks;
 
 namespace Smart_Strength_Backend.Services
 {
-    public class ExcercisesRepo
+    public class ExcercisesRepo: IExcercisesRepo
     {
-        public int Difficulty { get; private set; }
-        public string Tempo { get; private set; }
-        public string CardioTempo { get; private set; }
-        public int Reps { get; private set; }
-        public int Sets { get; private set; }
+        public int Difficulty { get; set; }
+        public string Tempo { get; set; }
+        public string CardioTempo { get; set; }
+        public int Reps { get; set; }
+        public int Sets { get; set; }
 
-        public ExcercisesRepo(string progressingRate, string trainingExperience, string fitnessGoal)
+        public void Init(string progressingRate, string trainingExperience, string fitnessGoal)
         {
             SetTempo(progressingRate);
             SetDifficulty(trainingExperience);
@@ -22,7 +23,7 @@ namespace Smart_Strength_Backend.Services
             SetRepsAndSets(fitnessGoal);
 
         }
-        private void SetCardioTempo(int difficulty)
+        public void SetCardioTempo(int difficulty)
         {
             if (difficulty == 1 || difficulty == 2)
             {
@@ -37,12 +38,12 @@ namespace Smart_Strength_Backend.Services
                 this.CardioTempo = "fast pace";
             }
         }
-        private void SetDifficulty(string trainingExperience)
+        public void SetDifficulty(string trainingExperience)
         {
             this.Difficulty = int.Parse(trainingExperience);
         }
 
-        private void SetTempo(string progressionRate)
+        public void SetTempo(string progressionRate)
         {
             if (progressionRate == "1" || progressionRate == "2")
             {
@@ -58,7 +59,7 @@ namespace Smart_Strength_Backend.Services
             }
         }
 
-        private void SetRepsAndSets(string fitnessGoal)
+        public void SetRepsAndSets(string fitnessGoal)
         {
             if (fitnessGoal == "1")
             {
@@ -77,7 +78,7 @@ namespace Smart_Strength_Backend.Services
             }
         }
 
-        private Excercise CreateExcercise(string name)
+        public Excercise CreateExcercise(string name)
         {
             return new Excercise()
             {

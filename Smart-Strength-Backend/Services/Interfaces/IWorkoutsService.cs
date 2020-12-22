@@ -10,7 +10,6 @@ namespace Smart_Strength_Backend.Services.Interfaces
     {
         public string Tempo { get; set; }
         public int Difficulty { get; set; }
-        public ExcercisesRepo ExcercisesRepo { get; set; }
 
         Workout[] CreateWorkouts(string fitnessGoal, string trainingExperience, string workoutsPerWeek);
         Workout[] CreateULTrainingRegime(string workoutsPerWeek, bool includeCardio);

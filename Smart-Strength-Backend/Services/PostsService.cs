@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Smart_Strength_Backend.Services
 {
-    public class PostsService : FirebaseService
+    public class PostsService : FirebaseService, IPostsService
     {
         public IUsersService UsersService { get; private set; }
         public ICommentsService CommentsService { get; private set; }

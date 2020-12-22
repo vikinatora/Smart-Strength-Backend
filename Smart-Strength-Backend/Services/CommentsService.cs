@@ -10,11 +10,11 @@ namespace Smart_Strength_Backend.Services
 {
     public class CommentsService : FirebaseService, ICommentsService
     {
-        public UsersService UsersService { get; private set; }
+        public IUsersService UsersService { get; private set; }
 
-        public CommentsService()
+        public CommentsService(IUsersService usersService)
         {
-            this.UsersService = new UsersService();
+            this.UsersService = usersService;
         }
 
         public async Task<Comment[]> GetComments(object[] commentsIDs)
@@ -139,24 +139,5 @@ namespace Smart_Strength_Backend.Services
             }
         }
 
-        Task<Comment[]> ICommentsService.GetComments(object[] commentsIDs)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<Comment> ICommentsService.AddComment(string postId, string userId, string content)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<bool> ICommentsService.LikeComment(string commentId, string userId)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<bool> ICommentsService.UnlikeComment(string commentId, string userId)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

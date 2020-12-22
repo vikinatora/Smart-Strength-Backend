@@ -10,11 +10,11 @@ namespace Smart_Strength_Backend.Services
 {
     public class UsersService: FirebaseService, IUsersService
     {
-        public TrainingsService TrainingsService { get; private set; }
+        public ITrainingsService TrainingsService { get; private set; }
 
-        public UsersService()
+        public UsersService(ITrainingsService trainingsService)
         {
-            this.TrainingsService = new TrainingsService();
+            this.TrainingsService = trainingsService;
         }
 
         public async Task<string> CreateUser(string fullName, string fbToken)

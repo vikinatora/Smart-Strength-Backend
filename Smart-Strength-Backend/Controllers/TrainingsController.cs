@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Smart_Strength_Backend.Models;
 using Smart_Strength_Backend.Services;
+using Smart_Strength_Backend.Services.Interfaces;
 using FromBodyAttribute = Microsoft.AspNetCore.Mvc.FromBodyAttribute;
 using HttpGetAttribute = Microsoft.AspNetCore.Mvc.HttpGetAttribute;
 using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
@@ -18,13 +19,13 @@ namespace Smart_Strength_Backend.Controllers
     [Route("api/trainings")]
     public class TrainingsController : ControllerBase
     {
-        public UsersService UsersService { get; }
-        public TrainingsService TrainingsService { get; }
+        public IUsersService UsersService { get; }
+        public ITrainingsService TrainingsService { get; }
 
-        public TrainingsController()
+        public TrainingsController(IUsersService usersService, ITrainingsService trainingsService)
         {
-            this.UsersService = new UsersService();
-            this.TrainingsService = new TrainingsService();
+            this.UsersService = usersService;
+            this.TrainingsService = trainingsService;
         }
 
 
@@ -34,8 +35,9 @@ namespace Smart_Strength_Backend.Controllers
         {
             try
             {
-                ExcercisesRepo excercisesRepo = new ExcercisesRepo(progressionRate, trainingExperience, fitnessGoal);
-                WorkoutsService workoutsService = new WorkoutsService(excercisesRepo);
+                IExcercisesRepo excercisesRepo = new ExcercisesRepo();
+                excercisesRepo.Init(progressionRate, trainingExperience, fitnessGoal);
+                IWorkoutsService workoutsService = new WorkoutsService(excercisesRepo);
                 Workout[] workouts = workoutsService.CreateWorkouts(fitnessGoal, trainingExperience, workoutsPerWeek);
                 TrainingProgram trainingProgram = new TrainingProgram();
 

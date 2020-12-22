@@ -11,9 +11,9 @@ namespace Smart_Strength_Backend.Services
     {
         public string Tempo { get; set; }
         public int Difficulty { get; set; }
-        public ExcercisesRepo ExcercisesRepo { get; set; }
+        public IExcercisesRepo ExcercisesRepo { get; set; }
 
-        public WorkoutsService(ExcercisesRepo excercisesRepo)
+        public WorkoutsService(IExcercisesRepo excercisesRepo)
         {
             this.ExcercisesRepo = excercisesRepo;
         }

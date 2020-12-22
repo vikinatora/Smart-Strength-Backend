@@ -1,4 +1,5 @@
 ﻿using Smart_Strength_Backend.Models;
+using Smart_Strength_Backend.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace Smart_Strength_Backend.Services
 {
-    public class TrainingsService : FirebaseService
+    public class TrainingsService : FirebaseService, ITrainingsService
     {
-        public ExcercisesService ExcercisesService { get; }
+        public IExcercisesService ExcercisesService { get; }
 
-        public TrainingsService()
+        public TrainingsService(IExcercisesService excercisesService)
         {
-            this.ExcercisesService = new ExcercisesService();
+            this.ExcercisesService = excercisesService;
         }
 
         public async Task<string> CreateTrainingProgram(TrainingProgram trainingProgram)
