@@ -1,4 +1,6 @@
-﻿using Smart_Strength_Backend.Models;
+﻿using Google.Cloud.Firestore;
+using Smart_Strength_Backend.Models;
+using Smart_Strength_Backend.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,22 +8,22 @@ using System.Threading.Tasks;
 
 namespace Smart_Strength_Backend.Services
 {
-    public class TrainingsService : FirebaseService
+    public class TrainingsService : FirebaseService, ITrainingsService
     {
-        public ExcercisesService ExcercisesService { get; }
+        public IExcercisesService ExcercisesService { get; }
 
-        public TrainingsService()
+        public TrainingsService(IExcercisesService excercisesService)
         {
-            this.ExcercisesService = new ExcercisesService();
+            this.ExcercisesService = excercisesService;
         }
 
         public async Task<string> CreateTrainingProgram(TrainingProgram trainingProgram)
         {
-            var workoutCollection = this.FirestoreDb.Collection("Workouts");
-            var excerciseCollection = this.FirestoreDb.Collection("Excercises");
-            var exIds = new List<object>();
-            var workoutIds = new List<object>();
-            var trainingProgramCollection = this.FirestoreDb.Collection("Training Programs");
+            CollectionReference workoutCollection = this.FirestoreDb.Collection("Workouts");
+            CollectionReference excerciseCollection = this.FirestoreDb.Collection("Excercises");
+            List<object> exIds = new List<object>();
+            List<object> workoutIds = new List<object>();
+            CollectionReference trainingProgramCollection = this.FirestoreDb.Collection("Training Programs");
             foreach (Workout workout in trainingProgram.Workouts)
             {
                 foreach (Excercise excercise in workout.Excercises)
@@ -34,7 +36,7 @@ namespace Smart_Strength_Backend.Services
                         { "name", excercise.Name },
                     };
 
-                    var result = await excerciseCollection.AddAsync(exObj);
+                    DocumentReference result = await excerciseCollection.AddAsync(exObj);
                     exIds.Add(result.Id);
                 }
 
@@ -44,26 +46,26 @@ namespace Smart_Strength_Backend.Services
                     { "day", workout.Day },
                 };
 
-                var wrResult = await workoutCollection.AddAsync(workoutObj);
+                DocumentReference wrResult = await workoutCollection.AddAsync(workoutObj);
                 workoutIds.Add(wrResult.Id);
                 Console.WriteLine();
             }
 
-            var trObj = new Dictionary<string, object>
+            Dictionary<string, object> trObj = new Dictionary<string, object>
             {
                 { "name", trainingProgram.Name },
                 { "workouts", workoutIds }
             };
 
-            var trResult = await trainingProgramCollection.AddAsync(trObj);
+            DocumentReference trResult = await trainingProgramCollection.AddAsync(trObj);
 
             return trResult.Id;
         }
         public async Task<string> GetTrainingProgramId(string userId)
         {
 
-            var docRef = this.FirestoreDb.Collection("Users").Document(userId);
-            var docSnapshot = await docRef.GetSnapshotAsync();
+            DocumentReference docRef = this.FirestoreDb.Collection("Users").Document(userId);
+            DocumentSnapshot docSnapshot = await docRef.GetSnapshotAsync();
             if (docSnapshot.Exists)
             {
                 Dictionary<string, object> docDict = docSnapshot.ToDictionary();
@@ -79,35 +81,35 @@ namespace Smart_Strength_Backend.Services
         {
             try
             {
-                var workoutId = await this.GetTrainingProgramId(userId);
+                string workoutId = await this.GetTrainingProgramId(userId);
                 if (String.IsNullOrEmpty(workoutId))
                 {
                     return null;
                 }
-                var workoutsCollection = this.FirestoreDb.Collection("Training Programs").Document(workoutId);
-                var snapshot = await workoutsCollection.GetSnapshotAsync();
+                DocumentReference workoutsCollection = this.FirestoreDb.Collection("Training Programs").Document(workoutId);
+                DocumentSnapshot snapshot = await workoutsCollection.GetSnapshotAsync();
 
                 if (!snapshot.Exists)
                 {
                     return null;
                 }
 
-                var workoutsDict = snapshot.ToDictionary();
-                var workoutIds = ((List<object>)workoutsDict["workouts"]).Cast<string>();
+                Dictionary<string, object> workoutsDict = snapshot.ToDictionary();
+                IEnumerable<string> workoutIds = ((List<object>)workoutsDict["workouts"]).Cast<string>();
                 string dayName = DateTime.Now.DayOfWeek.ToString();
-                var workoutObj = new Workout();
-                var excercises = new List<Excercise>();
+                Workout workoutObj = new Workout();
+                List<Excercise> excercises = new List<Excercise>();
                 foreach (string id in workoutIds)
                 {
-                    var workout = this.FirestoreDb.Collection("Workouts").Document(id);
-                    var snap = await workout.GetSnapshotAsync();
+                    DocumentReference workout = this.FirestoreDb.Collection("Workouts").Document(id);
+                    DocumentSnapshot snap = await workout.GetSnapshotAsync();
                     if (!snap.Exists)
                     {
                         continue;
                     }
                     Dictionary<string, object> fields = snap.ToDictionary();
                     string day = fields["day"].ToString();
-                    var excerciseIds = ((List<object>)fields["excercises"]).Cast<string>();
+                    IEnumerable<string> excerciseIds = ((List<object>)fields["excercises"]).Cast<string>();
                     if (dayName == day)
                     {
                         foreach (string exId in excerciseIds)

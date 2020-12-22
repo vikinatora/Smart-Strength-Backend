@@ -1,5 +1,6 @@
 ﻿using Google.Cloud.Firestore;
 using Smart_Strength_Backend.Models;
+using Smart_Strength_Backend.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace Smart_Strength_Backend.Services
 {
-    public class UsersService: FirebaseService
+    public class UsersService: FirebaseService, IUsersService
     {
-        public TrainingsService TrainingsService { get; private set; }
+        public ITrainingsService TrainingsService { get; private set; }
 
-        public UsersService()
+        public UsersService(ITrainingsService trainingsService)
         {
-            this.TrainingsService = new TrainingsService();
+            this.TrainingsService = trainingsService;
         }
 
         public async Task<string> CreateUser(string fullName, string fbToken)
@@ -56,7 +57,7 @@ namespace Smart_Strength_Backend.Services
                 string trProgramId = await this.TrainingsService.CreateTrainingProgram(trainingProgram);
 
                 DocumentReference user = this.FirestoreDb.Collection("Users").Document(userId);
-                var userSnapshot =  await user.GetSnapshotAsync();
+                DocumentSnapshot userSnapshot =  await user.GetSnapshotAsync();
 
                 if (userSnapshot.Exists)
                 {
@@ -83,8 +84,8 @@ namespace Smart_Strength_Backend.Services
         {
             User user = new User();
 
-            var docRef = this.FirestoreDb.Collection("Users").Document(userId);
-            var docSnapshot = await docRef.GetSnapshotAsync();
+            DocumentReference docRef = this.FirestoreDb.Collection("Users").Document(userId);
+            DocumentSnapshot docSnapshot = await docRef.GetSnapshotAsync();
             if(docSnapshot.Exists)
             {
                 Dictionary<string, object> docDict = docSnapshot.ToDictionary();

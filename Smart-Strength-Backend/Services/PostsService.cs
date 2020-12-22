@@ -1,5 +1,6 @@
 ﻿using Google.Cloud.Firestore;
 using Smart_Strength_Backend.Models;
+using Smart_Strength_Backend.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -8,15 +9,15 @@ using System.Threading.Tasks;
 
 namespace Smart_Strength_Backend.Services
 {
-    public class PostsService : FirebaseService
+    public class PostsService : FirebaseService, IPostsService
     {
-        public UsersService UsersService { get; private set; }
-        public CommentsService CommentsService { get; private set; }
+        public IUsersService UsersService { get; private set; }
+        public ICommentsService CommentsService { get; private set; }
 
-        public PostsService()
+        public PostsService(ICommentsService commentsService, IUsersService usersService)
         {
-            this.UsersService = new UsersService();
-            this.CommentsService = new CommentsService();
+            this.UsersService = usersService;
+            this.CommentsService = commentsService;
         }
 
         public async Task<Post[]> GetPosts()
@@ -37,7 +38,7 @@ namespace Smart_Strength_Backend.Services
                 string created = documentDictionary["created"].ToString();
                 string achievement = documentDictionary["achievement"].ToString();
 
-                var post = new Post();
+                Post post = new Post();
                 post.Id = document.Id;
                 post.Author = author;
                 post.Comments = commentsArray;
@@ -55,7 +56,7 @@ namespace Smart_Strength_Backend.Services
         {
             CollectionReference excercisesRef = this.FirestoreDb.Collection("Posts");
             string date = DateTime.Now.ToString("M/d/yyyy HH:mm", CultureInfo.InvariantCulture);
-            var newPost = new Dictionary<string, object>()
+            Dictionary<string, object> newPost = new Dictionary<string, object>()
             {
                 { "author" , userId },
                 { "content" , content },
@@ -79,17 +80,17 @@ namespace Smart_Strength_Backend.Services
         public async Task<bool> LikePost(string postId, string userId)
         {
             DocumentReference excercisesRef = this.FirestoreDb.Collection("Posts").Document(postId);
-            var query = await excercisesRef.GetSnapshotAsync();
+            DocumentSnapshot query = await excercisesRef.GetSnapshotAsync();
             if (query.Exists)
             {
-                var fields = query.ToDictionary();
-                var likes = ((List<object>)fields["likes"]).Cast<string>().ToList();
+                Dictionary<string, object> fields = query.ToDictionary();
+                List<string> likes = ((List<object>)fields["likes"]).Cast<string>().ToList();
                 likes.Add(userId);
-                var newLikes = new Dictionary<string, object>()
+                Dictionary<string, object> newLikes = new Dictionary<string, object>()
                 {
                     {"likes", likes.ToArray() }
                 };
-                var result = await excercisesRef.UpdateAsync(newLikes);
+                WriteResult result = await excercisesRef.UpdateAsync(newLikes);
                 if(result == null)
                 {
                     return false;
@@ -105,17 +106,17 @@ namespace Smart_Strength_Backend.Services
         public async Task<bool> UnlikePost(string postId, string userId)
         {
             DocumentReference excercisesRef = this.FirestoreDb.Collection("Posts").Document(postId);
-            var query = await excercisesRef.GetSnapshotAsync();
+            DocumentSnapshot query = await excercisesRef.GetSnapshotAsync();
             if (query.Exists)
             {
-                var fields = query.ToDictionary();
-                var likes = ((List<object>)fields["likes"]).Cast<string>().ToList();
+                Dictionary<string, object> fields = query.ToDictionary();
+                List<string> likes = ((List<object>)fields["likes"]).Cast<string>().ToList();
                 likes.Remove(userId);
-                var newLikes = new Dictionary<string, object>()
+                Dictionary<string, object> newLikes = new Dictionary<string, object>()
                 {
                     {"likes", likes.ToArray() }
                 };
-                var result = await excercisesRef.UpdateAsync(newLikes);
+                WriteResult result = await excercisesRef.UpdateAsync(newLikes);
                 if (result == null)
                 {
                     return false;

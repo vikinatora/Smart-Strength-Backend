@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Smart_Strength_Backend.Models;
 using Smart_Strength_Backend.Services;
+using Smart_Strength_Backend.Services.Interfaces;
 
 namespace Smart_Strength_Backend.Controllers
 {
@@ -14,13 +15,13 @@ namespace Smart_Strength_Backend.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        public UsersService UsersService { get; }
-        public TrainingsService TrainingsService { get; }
+        public IUsersService UsersService { get; }
+        public ITrainingsService TrainingsService { get; }
 
-        public UsersController()
+        public UsersController(IUsersService usersService, ITrainingsService trainingsService)
         {
-            this.UsersService = new UsersService();
-            this.TrainingsService = new TrainingsService();
+            this.UsersService = usersService;
+            this.TrainingsService = trainingsService;
         }
         [HttpPost]
         [Route("create")]

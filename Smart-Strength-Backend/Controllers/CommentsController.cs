@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Smart_Strength_Backend.Models;
 using Smart_Strength_Backend.Services;
+using Smart_Strength_Backend.Services.Interfaces;
 
 namespace Smart_Strength_Backend.Controllers
 {
@@ -13,10 +14,10 @@ namespace Smart_Strength_Backend.Controllers
     [ApiController]
     public class CommentsController : ControllerBase
     {
-        public CommentsService CommentsSevice { get; }
-        public CommentsController()
+        public ICommentsService CommentsSevice { get; }
+        public CommentsController(ICommentsService commentsService)
         {
-            this.CommentsSevice = new CommentsService();
+            this.CommentsSevice = commentsService;
         }
 
         [HttpPost]

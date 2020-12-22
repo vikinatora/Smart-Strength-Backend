@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Smart_Strength_Backend.Models;
 using Smart_Strength_Backend.Services;
+using Smart_Strength_Backend.Services.Interfaces;
 
 namespace Smart_Strength_Backend.Controllers
 {
@@ -13,10 +14,10 @@ namespace Smart_Strength_Backend.Controllers
     [ApiController]
     public class DietsController : ControllerBase
     {
-        public DietsService DietsService { get; private set; }
-        public DietsController()
+        public IDietsService DietsService { get; private set; }
+        public DietsController(IDietsService dietsService)
         {
-            this.DietsService = new DietsService();
+            this.DietsService = dietsService;
         }
 
         [HttpPost]

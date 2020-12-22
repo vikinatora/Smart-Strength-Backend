@@ -1850,7 +1850,7 @@
       ]
     },
     "Microsoft.NETCore.Platforms/1.1.0": {
-      "sha512": "a/iSwnRZb+LHFk49hQOyThh/ZNC3vsbZsF65XwQIb863qF6msmhdQtxGXFL28Ob2NsCz/drEj28BJd/YPpLRBg==",
+      "sha512": "kz0PEW2lhqygehI/d6XsPCQzD7ff7gUJaVGPVETX611eadGsA3A877GdSlU0LRVMCTH/+P3o2iDTak+S08V2+A==",
       "type": "package",
       "path": "microsoft.netcore.platforms/1.1.0",
       "files": [
@@ -1959,7 +1959,7 @@
       ]
     },
     "Newtonsoft.Json.Bson/1.0.1": {
-      "sha512": "W5Ke5xei9yS0ljQZuT75VgSp5M43eCPm5hHAelvKyGGU4dV7hYCmtwdsxoADb/exO6pYHeu/Iki43TdYPzfESQ==",
+      "sha512": "5PYT/IqQ+UK31AmZiSS102R6EsTo+LGTSI8bp7WAUqDKaF4wHXD8U9u4WxTI1vc64tYi++8p3dk3WWNqPFgldw==",
       "type": "package",
       "path": "newtonsoft.json.bson/1.0.1",
       "files": [
@@ -2236,7 +2236,7 @@
       ]
     },
     "System.Buffers/4.3.0": {
-      "sha512": "Pcv2b27ffpu09pjN3PgbnQWYEdhOBcesYYsmQO/tZC8Imw74TJJ8X1j+/+Q7uWprz0/sQiUpuCmYsY1w5GSMvg==",
+      "sha512": "ratu44uTIHgeBeI0dE8DWvmXVBSo4u7ozRZZHOMmK/JPpYyo0dAfgSiHlpiObMQ5lEtEyIXA40sKRYg5J6A8uQ==",
       "type": "package",
       "path": "system.buffers/4.3.0",
       "files": [
@@ -3286,7 +3286,7 @@
       ]
     },
     "System.Net.Http/4.3.0": {
-      "sha512": "6BBc6BUa7pWFL7KUI/c8wb18IobTZHTtcQKksxJI5F9DRDShdtOvBEJzg5jJbFdTll7gRE+5yXUlq72ciLE+QQ==",
+      "sha512": "sYg+FtILtRQuYWSIAuNOELwVuVsxVyJGWQyOnlAzhV4xvhyFnON1bAzYYC+jjRW8JREM45R0R5Dgi8MTC5sEwA==",
       "type": "package",
       "path": "system.net.http/4.3.0",
       "files": [
@@ -5198,21 +5198,17 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\vikin\\.nuget\\packages\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\vikin\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\vikin\\source\\repos\\vikinatora\\Smart-Strength-Backend\\Smart-Strength-Backend\\Smart-Strength-Backend.csproj",
+      "projectUniqueName": "C:\\Users\\vikin\\source\\repos\\Smart-Strength-Backend\\Smart-Strength-Backend\\Smart-Strength-Backend.csproj",
       "projectName": "Smart-Strength-Backend",
-      "projectPath": "C:\\Users\\vikin\\source\\repos\\vikinatora\\Smart-Strength-Backend\\Smart-Strength-Backend\\Smart-Strength-Backend.csproj",
+      "projectPath": "C:\\Users\\vikin\\source\\repos\\Smart-Strength-Backend\\Smart-Strength-Backend\\Smart-Strength-Backend.csproj",
       "packagesPath": "C:\\Users\\vikin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\vikin\\source\\repos\\vikinatora\\Smart-Strength-Backend\\Smart-Strength-Backend\\obj\\",
+      "outputPath": "C:\\Users\\vikin\\source\\repos\\Smart-Strength-Backend\\Smart-Strength-Backend\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-      ],
       "configFilePaths": [
         "C:\\Users\\vikin\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
@@ -5226,6 +5222,7 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
           "projectReferences": {}
         }
       },
@@ -5237,6 +5234,7 @@
     },
     "frameworks": {
       "netcoreapp3.1": {
+        "targetAlias": "netcoreapp3.1",
         "dependencies": {
           "Google.Cloud.Firestore": {
             "target": "Package",
@@ -5265,7 +5263,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.403\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
       }
     }
   },

@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Smart_Strength_Backend.Services;
+using Smart_Strength_Backend.Services.Interfaces;
 
 namespace Smart_Strength_Backend
 {
@@ -26,6 +28,15 @@ namespace Smart_Strength_Backend
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddSingleton<IFirebaseService, FirebaseService>();
+            services.AddSingleton<ICommentsService, CommentsService>();
+            services.AddSingleton<IDietsService, DietsService>();
+            services.AddSingleton<IExcercisesService, ExcercisesService>();
+            services.AddSingleton<IPostsService, PostsService>();
+            services.AddSingleton<ITrainingsService, TrainingsService>();
+            services.AddSingleton<IUsersService, UsersService>();
+            services.AddTransient<IExcercisesRepo, ExcercisesRepo>();
+            services.AddTransient<IWorkoutsService, WorkoutsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

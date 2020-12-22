@@ -1,4 +1,5 @@
 ﻿using Smart_Strength_Backend.Models;
+using Smart_Strength_Backend.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace Smart_Strength_Backend.Services
 {
-    public class WorkoutsService
+    public class WorkoutsService: IWorkoutsService
     {
-        public string Tempo { get; private set; }
-        public int Difficulty { get; private set; }
-        public ExcercisesRepo ExcercisesRepo { get; private set; }
+        public string Tempo { get; set; }
+        public int Difficulty { get; set; }
+        public IExcercisesRepo ExcercisesRepo { get; set; }
 
-        public WorkoutsService(ExcercisesRepo excercisesRepo)
+        public WorkoutsService(IExcercisesRepo excercisesRepo)
         {
             this.ExcercisesRepo = excercisesRepo;
         }
@@ -89,7 +90,7 @@ namespace Smart_Strength_Backend.Services
             return program;
         }
 
-        private Workout[] CreateULTrainingRegime(string workoutsPerWeek, bool includeCardio)
+        public Workout[] CreateULTrainingRegime(string workoutsPerWeek, bool includeCardio)
         {
             List<Workout> workouts = new List<Workout>();
 
@@ -127,7 +128,7 @@ namespace Smart_Strength_Backend.Services
             return workouts.ToArray();
         }
 
-        private Workout[] CreatePPLTrainingRegime(string workoutsPerWeek, bool includeCardio)
+        public Workout[] CreatePPLTrainingRegime(string workoutsPerWeek, bool includeCardio)
         {
             List<Workout> workouts = new List<Workout>();
             switch (workoutsPerWeek)
@@ -162,11 +163,11 @@ namespace Smart_Strength_Backend.Services
                     workouts.Add(CreateLegsWorkout(includeCardio));
                     break;
             }
-            var workoutArray = workouts.ToArray();
+            Workout[] workoutArray = workouts.ToArray();
             return workoutArray;
         }
 
-        private Workout CreatePullWorkout(bool includeCardio)
+        public Workout CreatePullWorkout(bool includeCardio)
         {
             List<Excercise> excecises = new List<Excercise>();
             if (includeCardio)
@@ -190,7 +191,7 @@ namespace Smart_Strength_Backend.Services
             return workout;
         }
 
-        private Workout CreatePushWorkout(bool includeCardio)
+        public Workout CreatePushWorkout(bool includeCardio)
         {
             List<Excercise> excecises = new List<Excercise>();
             if (includeCardio)
@@ -214,7 +215,7 @@ namespace Smart_Strength_Backend.Services
             return workout;
         }
 
-        private Workout[] CreateFulLBodyTrainingRegime(string workoutsPerWeek, bool includeCardio)
+        public Workout[] CreateFulLBodyTrainingRegime(string workoutsPerWeek, bool includeCardio)
         {
             List<Workout> workouts = new List<Workout>();
             for (int i = 0; i < int.Parse(workoutsPerWeek); i++)
@@ -225,7 +226,7 @@ namespace Smart_Strength_Backend.Services
             return workouts.ToArray();
         }
 
-        private Workout CreateChestAndTricepsWorkout(bool includeCardio)
+        public Workout CreateChestAndTricepsWorkout(bool includeCardio)
         {
             List<Excercise> excecises = new List<Excercise>();
             if(includeCardio)
@@ -248,7 +249,7 @@ namespace Smart_Strength_Backend.Services
             return workout;
         }
 
-        private Workout CreateShoulderWorkout(bool includeCardio)
+        public Workout CreateShoulderWorkout(bool includeCardio)
         {
             List<Excercise> excecises = new List<Excercise>();
             if (includeCardio)
@@ -270,7 +271,7 @@ namespace Smart_Strength_Backend.Services
             return workout;
         }
 
-        private Workout CreateBackAndBicepsWorkout(bool includeCardio)
+        public Workout CreateBackAndBicepsWorkout(bool includeCardio)
         {
             List<Excercise> excecises = new List<Excercise>();
             if (includeCardio)
@@ -292,7 +293,7 @@ namespace Smart_Strength_Backend.Services
             return workout;
         }
 
-        private Workout CreateLegsWorkout(bool includeCardio)
+        public Workout CreateLegsWorkout(bool includeCardio)
         {
             List<Excercise> excecises = new List<Excercise>();
             if (includeCardio)
@@ -314,7 +315,7 @@ namespace Smart_Strength_Backend.Services
             return workout;
         }
 
-        private Workout CreateMixedWorkout(bool includeCardio)
+        public Workout CreateMixedWorkout(bool includeCardio)
         {
             List<Excercise> excecises = new List<Excercise>();
             if (includeCardio)
@@ -339,7 +340,7 @@ namespace Smart_Strength_Backend.Services
             return workout;
         }
 
-        private Workout CreateUpperBodyWorkout(bool includeCardio)
+        public Workout CreateUpperBodyWorkout(bool includeCardio)
         {
             List<Excercise> excecises = new List<Excercise>();
             if (includeCardio)

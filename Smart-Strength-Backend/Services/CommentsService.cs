@@ -1,5 +1,6 @@
 ﻿using Google.Cloud.Firestore;
 using Smart_Strength_Backend.Models;
+using Smart_Strength_Backend.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,21 +8,22 @@ using System.Threading.Tasks;
 
 namespace Smart_Strength_Backend.Services
 {
-    public class CommentsService : FirebaseService
+    public class CommentsService : FirebaseService, ICommentsService
     {
-        public UsersService UsersService { get; private set; }
-        public CommentsService()
+        public IUsersService UsersService { get; private set; }
+
+        public CommentsService(IUsersService usersService)
         {
-            this.UsersService = new UsersService();
+            this.UsersService = usersService;
         }
 
         public async Task<Comment[]> GetComments(object[] commentsIDs)
         {
-            var comments = new List<Comment>();
-            var commentsCollection = this.FirestoreDb.Collection("Comments");
+            List<Comment> comments = new List<Comment>();
+            CollectionReference commentsCollection = this.FirestoreDb.Collection("Comments");
             foreach (string id in commentsIDs)
             {
-                var docSnapshot = await commentsCollection.Document(id).GetSnapshotAsync();
+                DocumentSnapshot docSnapshot = await commentsCollection.Document(id).GetSnapshotAsync();
                 Dictionary<string, object> docInfo = docSnapshot.ToDictionary();
                 User author = await this.UsersService.GetUser(docInfo["author"].ToString());
                 List<object> likes = (List<object>)docInfo["likes"];
@@ -41,7 +43,7 @@ namespace Smart_Strength_Backend.Services
 
         public async Task<Comment> AddComment(string postId, string userId, string content)
         {
-            var newComment = new Dictionary<string, object>()
+            Dictionary<string, object> newComment = new Dictionary<string, object>()
             {
                 { "content", content },
                 { "author", userId },
@@ -49,28 +51,28 @@ namespace Smart_Strength_Backend.Services
 
             };
 
-            var result = await this.FirestoreDb.Collection("Comments").AddAsync(newComment);
+            DocumentReference result = await this.FirestoreDb.Collection("Comments").AddAsync(newComment);
             if (result == null)
             {
                 return null;
             }
-            var post = this.FirestoreDb.Collection("Posts").Document(postId);
-            var query = await post.GetSnapshotAsync();
+            DocumentReference post = this.FirestoreDb.Collection("Posts").Document(postId);
+            DocumentSnapshot query = await post.GetSnapshotAsync();
 
             if (!query.Exists)
             {
                 return null;
             }
-            var fields = query.ToDictionary();
-            var comments = ((List<object>)fields["comments"]).Cast<string>().ToList();
+            Dictionary<string, object> fields = query.ToDictionary();
+            List<string> comments = ((List<object>)fields["comments"]).Cast<string>().ToList();
             comments.Add(result.Id);
 
-            var newComments = new Dictionary<string, object>()
+            Dictionary<string, object> newComments = new Dictionary<string, object>()
             {
                 { "comments", comments}
             };
 
-            var updareResult = await post.UpdateAsync(newComments);
+            WriteResult updareResult = await post.UpdateAsync(newComments);
             if (updareResult == null)
             {
                 return null;
@@ -86,17 +88,17 @@ namespace Smart_Strength_Backend.Services
         public async Task<bool> LikeComment(string commentId, string userId)
         {
             DocumentReference excercisesRef = this.FirestoreDb.Collection("Comments").Document(commentId);
-            var query = await excercisesRef.GetSnapshotAsync();
+            DocumentSnapshot query = await excercisesRef.GetSnapshotAsync();
             if (query.Exists)
             {
-                var fields = query.ToDictionary();
-                var likes = ((List<object>)fields["likes"]).Cast<string>().ToList();
+                Dictionary<string, object> fields = query.ToDictionary();
+                List<string> likes = ((List<object>)fields["likes"]).Cast<string>().ToList();
                 likes.Add(userId);
-                var newLikes = new Dictionary<string, object>()
+                Dictionary<string, object> newLikes = new Dictionary<string, object>()
                 {
                     {"likes", likes.ToArray() }
                 };
-                var result = await excercisesRef.UpdateAsync(newLikes);
+                WriteResult result = await excercisesRef.UpdateAsync(newLikes);
                 if (result == null)
                 {
                     return false;
@@ -113,17 +115,17 @@ namespace Smart_Strength_Backend.Services
         public async Task<bool> UnlikeComment(string commentId, string userId)
         {
             DocumentReference excercisesRef = this.FirestoreDb.Collection("Comments").Document(commentId);
-            var query = await excercisesRef.GetSnapshotAsync();
+            DocumentSnapshot query = await excercisesRef.GetSnapshotAsync();
             if (query.Exists)
             {
-                var fields = query.ToDictionary();
-                var likes = ((List<object>)fields["likes"]).Cast<string>().ToList();
+                Dictionary<string, object> fields = query.ToDictionary();
+                List<string> likes = ((List<object>)fields["likes"]).Cast<string>().ToList();
                 likes.Remove(userId);
-                var newLikes = new Dictionary<string, object>()
+                Dictionary<string, object> newLikes = new Dictionary<string, object>()
                 {
                     {"likes", likes.ToArray() }
                 };
-                var result = await excercisesRef.UpdateAsync(newLikes);
+                WriteResult result = await excercisesRef.UpdateAsync(newLikes);
                 if (result == null)
                 {
                     return false;
@@ -136,5 +138,6 @@ namespace Smart_Strength_Backend.Services
                 return false;
             }
         }
+
     }
 }
