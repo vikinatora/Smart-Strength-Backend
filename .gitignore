@@ -10,3 +10,5 @@
 /Smart-Strength-Backend/.vs/Smart-Strength-Backend/config
 /Smart-Strength-Backend/.vs/Smart-Strength-Backend/DesignTimeBuild
 /Smart-Strength-Backend/obj
+/Smart-Strength-Backend.Tests/bin/Debug/netcoreapp3.1
+/Smart-Strength-Backend.Tests/obj

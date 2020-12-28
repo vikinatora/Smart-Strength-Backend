@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "Smart-Strength-Backend.Tests": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "Key": "Value",
+        "GOOGLE_APPLICATION_CREDENTIALS": "C:\\Users\\vikin\\source\\repos\\Smart-Strength-Backend\\Smart-Strength-Backend\\smart-strength-firebase-adminsdk-mstkd-d8df384bda.json"
+      }
+    }
+  }
+}

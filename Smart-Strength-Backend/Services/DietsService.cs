@@ -10,9 +10,17 @@ namespace Smart_Strength_Backend.Services
 {
     public class DietsService :FirebaseService, IDietsService
     {
+        public DietsService()
+        {
+
+        }
+        public DietsService(bool shouldCreateDbConnection)
+            :base(shouldCreateDbConnection)
+        {
+
+        }
         public Diet CreateDiet(string gender, double weight, int height, int fitnessGoal, int age, string progressionRate)
         {
-            Diet diet = new Diet();
             double calories = CalcualteBMR(gender, weight, height, age);
             calories = GetCaloriesFromGoal(fitnessGoal, progressionRate, calories);
             double protein = 0;
@@ -85,7 +93,7 @@ namespace Smart_Strength_Backend.Services
             return calories;
         }
 
-        public static double CalcualteBMR(string gender, double weight, int height, int age)
+        public double CalcualteBMR(string gender, double weight, int height, int age)
         {
             double calories = 10 * weight + 6.25 * height - 5 * age;
             if (gender == "male")

@@ -15,5 +15,10 @@ namespace Smart_Strength_Backend.Services
             this.FirestoreDb = FirestoreDb.Create("smart-strength");
         }
 
+        public FirebaseService(bool shouldCreateDbConnection)
+        {
+            
+        }
+
     }
 }

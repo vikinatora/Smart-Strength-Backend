@@ -26,7 +26,7 @@ namespace Smart_Strength_Backend.Services
         public void SetCardioTempo(int difficulty)
         {
             if (difficulty == 1 || difficulty == 2)
-            {
+            { 
                 this.CardioTempo = "slow pace";
             }
             else if (difficulty == 3)
@@ -63,12 +63,12 @@ namespace Smart_Strength_Backend.Services
         {
             if (fitnessGoal == "1")
             {
-                this.Reps = 8;
+                this.Reps = 10;
                 this.Sets = 4;
             }
             else if (fitnessGoal == "3")
             {
-                this.Reps = 10;
+                this.Reps = 8;
                 this.Sets = 3;
             }
             else

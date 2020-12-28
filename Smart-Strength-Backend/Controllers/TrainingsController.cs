@@ -38,11 +38,7 @@ namespace Smart_Strength_Backend.Controllers
                 IExcercisesRepo excercisesRepo = new ExcercisesRepo();
                 excercisesRepo.Init(progressionRate, trainingExperience, fitnessGoal);
                 IWorkoutsService workoutsService = new WorkoutsService(excercisesRepo);
-                Workout[] workouts = workoutsService.CreateWorkouts(fitnessGoal, trainingExperience, workoutsPerWeek);
-                TrainingProgram trainingProgram = new TrainingProgram();
-
-                trainingProgram.Workouts = workouts;
-                trainingProgram.Name = CreateRegimeName(trainingExperience, fitnessGoal);
+                TrainingProgram trainingProgram = workoutsService.CreateWorkouts(fitnessGoal, trainingExperience, workoutsPerWeek);
                 await this.UsersService.AddTrainingProgramToUser(trainingProgram, userId);
                 return trainingProgram;
 

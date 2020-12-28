@@ -18,76 +18,70 @@ namespace Smart_Strength_Backend.Services
             this.ExcercisesRepo = excercisesRepo;
         }
 
-        public Workout[] CreateWorkouts(string fitnessGoal, string trainingExperience, string workoutsPerWeek)
+        public TrainingProgram CreateWorkouts(string fitnessGoal, string trainingExperience, string workoutsPerWeek)
         {
-            Workout[] program = null;
-
-            // Lose weight || Build muscle and lose weiУght
+            Workout[] workouts = null;
+            bool includeCardio = false;
+            TrainingProgram trainingProgram = null;
+            // Lose weight || Build muscle and lose weight
             if (fitnessGoal == "1" || fitnessGoal == "3")
             {
-                if (trainingExperience == "1")
-                {
-                    program = this.CreateFulLBodyTrainingRegime(workoutsPerWeek, true);
-                }
-                else if (trainingExperience == "2" || trainingExperience == "3")
-                {
-                    program = this.CreatePPLTrainingRegime(workoutsPerWeek, true);
-                }
-                else
-                {
-                    program = this.CreateULTrainingRegime(workoutsPerWeek, true);
-                }
-            }
-            // Build muscle || Maintain
-            else if (fitnessGoal == "2" || fitnessGoal == "4")
-            {
-                if (trainingExperience == "1")
-                {
-                    program = this.CreateFulLBodyTrainingRegime(workoutsPerWeek, false);
-                }
-                else if (trainingExperience == "2" || trainingExperience == "3")
-                {
-                    program = this.CreatePPLTrainingRegime(workoutsPerWeek, false);
-                }
-                else
-                {
-                    program = this.CreateULTrainingRegime(workoutsPerWeek, false);
-                }
-            }
-            if (program.Length == 3)
-            {
-                program[0].Day = "Monday";
-                program[1].Day = "Wednesday";
-                program[2].Day = "Friday";
+                includeCardio = true;
             }
 
-            if (program.Length == 4)
+            switch (trainingExperience)
             {
-                program[0].Day = "Monday";
-                program[1].Day = "Tuesday";
-                program[2].Day = "Thursday";
-                program[3].Day = "Friday";
+                case "1":
+                    workouts = this.CreateFulLBodyTrainingRegime(workoutsPerWeek, includeCardio);
+                    break;
+                case "2":
+                    workouts = this.CreatePPLTrainingRegime(workoutsPerWeek, includeCardio);
+                    break;
+                case "3":
+                    workouts = this.CreateULTrainingRegime(workoutsPerWeek, includeCardio);
+                    break;
+                default:
+                    break;
+            }
+            trainingProgram.Workouts = workouts;
+            trainingProgram.Name = CreateRegimeName(trainingExperience, fitnessGoal);
+
+            if (workouts.Length == 3)
+            {
+                workouts[0].Day = "Monday";
+                workouts[1].Day = "Wednesday";
+                workouts[2].Day = "Friday";
             }
 
-            if (program.Length == 5)
+            if (workouts.Length == 4)
             {
-                program[0].Day = "Monday";
-                program[1].Day = "Tuesday";
-                program[2].Day = "Wednesday";
-                program[3].Day = "Friday";
-                program[4].Day = "Saturday";
+                workouts[0].Day = "Monday";
+                workouts[1].Day = "Tuesday";
+                workouts[2].Day = "Thursday";
+                workouts[3].Day = "Friday";
             }
 
-            if (program.Length == 6)
+            if (workouts.Length == 5)
             {
-                program[0].Day = "Monday";
-                program[1].Day = "Tuesday";
-                program[2].Day = "Wednesday";
-                program[3].Day = "Friday";
-                program[4].Day = "Saturday";
-                program[5].Day = "Sunday";
+                workouts[0].Day = "Monday";
+                workouts[1].Day = "Tuesday";
+                workouts[2].Day = "Wednesday";
+                workouts[3].Day = "Friday";
+                workouts[4].Day = "Saturday";
             }
-            return program;
+
+            if (workouts.Length == 6)
+            {
+                workouts[0].Day = "Monday";
+                workouts[1].Day = "Tuesday";
+                workouts[2].Day = "Wednesday";
+                workouts[3].Day = "Friday";
+                workouts[4].Day = "Saturday";
+                workouts[5].Day = "Sunday";
+            }
+
+
+            return trainingProgram;
         }
 
         public Workout[] CreateULTrainingRegime(string workoutsPerWeek, bool includeCardio)
@@ -99,14 +93,14 @@ namespace Smart_Strength_Backend.Services
                 case "3":
                     workouts.Add(CreateUpperBodyWorkout(includeCardio));
                     workouts.Add(CreateLegsWorkout(includeCardio));
+                    workouts.Add(CreateUpperBodyWorkout(includeCardio));
                     break;
-
                 case "4":
                     workouts.Add(CreateUpperBodyWorkout(includeCardio));
                     workouts.Add(CreateLegsWorkout(includeCardio));
                     workouts.Add(CreateUpperBodyWorkout(includeCardio));
+                    workouts.Add(CreateLegsWorkout(includeCardio));
                     break;
-
                 case "5":
                     workouts.Add(CreateUpperBodyWorkout(includeCardio));
                     workouts.Add(CreateLegsWorkout(includeCardio));
@@ -364,6 +358,74 @@ namespace Smart_Strength_Backend.Services
             };
 
             return workout;
+        }
+
+        public string CreateRegimeName(string trainingExperience, string fitnessGoal)
+        {
+            switch (fitnessGoal)
+            {
+                case "1":
+                    switch (trainingExperience)
+                    {
+                        case "1":
+                            return "Full body with fast tempo";
+                        case "2":
+                            return "Push/Pull/Legs with fast tempo";
+                        case "3":
+                            return "Upper/Lower split with fast tempo";
+                        default:
+                            break;
+                    }
+                    break;
+                case "2":
+                    switch (trainingExperience)
+                    {
+                        case "1":
+                            return "Full body with normal tempo";
+                        case "2":
+                            return "Push/Pull/Legs with normal tempo";
+                        case "3":
+                            return "Upper/Lower with normal tempo";
+                        default:
+                            break;
+                    }
+                    break;
+                case "3":
+                    switch (trainingExperience)
+                    {
+                        case "1":
+                            return "Full body with normal tempo";
+
+                        case "2":
+                            return "Push/Pull/Legs with normal tempo";
+
+                        case "3":
+                            return "Upper/Lower with normal tempo";
+                        default:
+                            break;
+                    }
+                    break;
+                case "4":
+                    switch (trainingExperience)
+                    {
+                        case "1":
+                            return "Full body with slow tempo";
+
+                        case "2":
+                            return "Push/Pull/Legs with slow tempo";
+
+                        case "3":
+                            return "Upper/Lower with slow tempo";
+                        default:
+                            break;
+                    }
+                    break;
+                default:
+                    break;
+
+            }
+            return null;
+
         }
     }
 }

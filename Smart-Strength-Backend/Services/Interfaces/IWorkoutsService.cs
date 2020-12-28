@@ -11,7 +11,7 @@ namespace Smart_Strength_Backend.Services.Interfaces
         public string Tempo { get; set; }
         public int Difficulty { get; set; }
 
-        Workout[] CreateWorkouts(string fitnessGoal, string trainingExperience, string workoutsPerWeek);
+        TrainingProgram CreateWorkouts(string fitnessGoal, string trainingExperience, string workoutsPerWeek);
         Workout[] CreateULTrainingRegime(string workoutsPerWeek, bool includeCardio);
         Workout[] CreatePPLTrainingRegime(string workoutsPerWeek, bool includeCardio);
         Workout CreatePullWorkout(bool includeCardio);
@@ -23,6 +23,6 @@ namespace Smart_Strength_Backend.Services.Interfaces
         Workout CreateLegsWorkout(bool includeCardio);
         Workout CreateMixedWorkout(bool includeCardio);
         Workout CreateUpperBodyWorkout(bool includeCardio);
+        string CreateRegimeName(string trainingExperience, string fitnessGoal);
     }
-    
 }
