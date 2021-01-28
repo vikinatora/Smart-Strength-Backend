@@ -100,7 +100,7 @@ namespace Smart_Strength_Backend.Services
                 Workout workoutObj = new Workout();
                 List<Excercise> excercises = new List<Excercise>();
                 foreach (string id in workoutIds)
-                {
+                {  
                     DocumentReference workout = this.FirestoreDb.Collection("Workouts").Document(id);
                     DocumentSnapshot snap = await workout.GetSnapshotAsync();
                     if (!snap.Exists)

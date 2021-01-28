@@ -22,7 +22,7 @@ namespace Smart_Strength_Backend.Services
         {
             Workout[] workouts = null;
             bool includeCardio = false;
-            TrainingProgram trainingProgram = null;
+            TrainingProgram trainingProgram = new TrainingProgram();
             // Lose weight || Build muscle and lose weight
             if (fitnessGoal == "1" || fitnessGoal == "3")
             {
@@ -41,6 +41,7 @@ namespace Smart_Strength_Backend.Services
                     workouts = this.CreateULTrainingRegime(workoutsPerWeek, includeCardio);
                     break;
                 default:
+                    workouts = this.CreateULTrainingRegime(workoutsPerWeek, includeCardio);
                     break;
             }
             trainingProgram.Workouts = workouts;

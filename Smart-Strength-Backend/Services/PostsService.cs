@@ -29,7 +29,7 @@ namespace Smart_Strength_Backend.Services
             foreach (DocumentSnapshot document in snapshot)
             {
                 Dictionary<string, object> documentDictionary = document.ToDictionary();
-                string content = documentDictionary["content"].ToString();
+                string content = documentDictionary["content"] != null ? documentDictionary["content"].ToString() : "";
                 string authorId = documentDictionary["author"].ToString();
                 User author = await this.UsersService.GetUser(authorId);
                 List<object> commentsIds = (List<object>)documentDictionary["comments"];
